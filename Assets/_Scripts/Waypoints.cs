@@ -1,11 +1,10 @@
+using UnityEditor;
 using UnityEngine;
 
 public class Waypoints : MonoBehaviour
 {
-    // Lưu thẳng Transform (Định vị) để quái đọc cho nhanh
     public static Transform[] points; 
 
-    // Dùng Awake để đảm bảo đường đi được gom lại TRƯỚC KHI quái đẻ ra
     void Awake() 
     {
         points = new Transform[transform.childCount];
@@ -15,11 +14,14 @@ public class Waypoints : MonoBehaviour
         }
     }
 
-    // Vẽ sợi dây tàng hình màu xám giúp bạn dễ nhìn Map
     private void OnDrawGizmos()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.white;
+            style.alignment = TextAnchor.MiddleCenter;
+            Handles.Label(transform.GetChild(i).position, i.ToString(), style);
             if (i < transform.childCount - 1)
             {
                 Gizmos.color = Color.gray;
