@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1564228745175597589}
   - component: {fileID: 5831074643329873313}
   - component: {fileID: 6445227105539362806}
-  - component: {fileID: 5450098920357661503}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -95,19 +94,6 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!114 &6445227105539362806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675843318518243506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cf7ae58d78f12746bbc3c243b4f78e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  speed: 3
---- !u!114 &5450098920357661503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
