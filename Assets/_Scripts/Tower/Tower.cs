@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [SerializedField] private TowerData data;
+    [SerializeField] private TowerData data;
     public GameObject bulletPrefab;
     private Transform target;
+
+    // Các biến lấy từ TowerData (hoặc dùng trực tiếp nếu chưa gắn TowerData)
+    private float range => data != null ? data.range : 4f;
+    private float fireRate => data != null ? (1f / data.shootInterval) : 1f;
+    private float fireCountdown = 0f;
 
     void Start()
     {

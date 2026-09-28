@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "TowerData", menuName = "Scriptable Objects/TowerData")]
-public class NewScriptableObjectScript : ScriptableObject
+public class TowerData : ScriptableObject
 {
     public float range;
     public float shootInterval;
