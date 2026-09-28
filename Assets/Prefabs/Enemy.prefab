@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf7ae58d78f12746bbc3c243b4f78e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  speed: 1
+  speed: 0.5
 --- !u!95 &2867646445296185283
 Animator:
   serializedVersion: 7

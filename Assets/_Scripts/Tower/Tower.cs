@@ -2,9 +2,7 @@
 
 public class Tower : MonoBehaviour
 {
-    public float range = 4f;
-    public float fireRate = 1f;
-    private float fireCountdown = 0f;
+    [SerializedField] private TowerData data;
     public GameObject bulletPrefab;
     private Transform target;
 
