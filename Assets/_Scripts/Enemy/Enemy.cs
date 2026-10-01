@@ -8,6 +8,13 @@ public class Enemy : MonoBehaviour
     private int targetIndex = 0;
     private Transform targetPoint;
     private float health = 100f;
+    private WaveSpawner waveSpawner;
+    private bool removedFromWave;
+
+    public void Initialize(WaveSpawner spawner)
+    {
+        waveSpawner = spawner;
+    }
     void Start()
     {
         targetPoint = Waypoints.points[0];
@@ -23,7 +30,8 @@ public class Enemy : MonoBehaviour
 
             if (targetIndex >= Waypoints.points.Length)
             {
-                GameManager.Lives -= 1; 
+                GameManager.Lives -= 1;
+                NotifyRemoved(false);
                 Destroy(gameObject);
                 return;
             }
@@ -42,7 +50,14 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
-        GameManager.Money += 25; 
+        NotifyRemoved(true);
         Destroy(gameObject);
+    }
+
+    private void NotifyRemoved(bool defeated)
+    {
+        if (removedFromWave) return;
+        removedFromWave = true;
+        waveSpawner?.NotifyEnemyRemoved(defeated);
     }
 }
