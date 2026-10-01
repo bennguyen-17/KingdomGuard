@@ -684,7 +684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   range: 4
   fireRate: 1
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 1053547120077282029, guid: 84ab9760dde975346be4b7b5b0c339b5, type: 3}
 --- !u!1 &819727070
 GameObject:
   m_ObjectHideFlags: 0

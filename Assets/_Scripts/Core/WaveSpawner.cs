@@ -1,23 +1,129 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private float _spawnTimer;
-    private float _spawnInterval = 2f;
+    [Header("Wave configuration")]
     public GameObject enemyPrefab;
+    public string mainMenuScene = "MainMenu";
+    [Min(1)] public int totalWaves = 10;
+    [Min(1)] public int enemiesPerWave = 5;
+    [Min(0.1f)] public float spawnInterval = 1.5f;
+    [Min(0f)] public float timeBetweenWaves = 3f;
 
-    void Update()
+    private int waveIndex;
+    private int spawnedThisWave;
+    private int aliveEnemies;
+    private float timer;
+    private bool waitingForNextWave;
+
+    private void Start()
     {
-        _spawnTimer -= Time.deltaTime;
-        if (_spawnTimer <= 0 )
+        if (GameManager.Instance == null)
+            new GameObject("GameManager").AddComponent<GameManager>();
+
+        totalWaves = Mathf.Max(1, totalWaves);
+        enemiesPerWave = Mathf.Max(1, enemiesPerWave);
+        if (GameManager.Instance != null)
         {
-            _spawnTimer = _spawnInterval;
-        SpawnEnemy();
+            GameManager.Instance.ConfigureWaves(totalWaves);
+            GameManager.Instance.ConfigureMainMenu(mainMenuScene);
+        }
+        StartWave();
+    }
+
+    private void Update()
+    {
+        if (GameManager.GameIsOver) return;
+        if (GameManager.Lives <= 0)
+        {
+            GameManager.Instance?.EndGame();
+            return;
+        }
+
+        if (waitingForNextWave)
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0f) StartWave();
+            return;
+        }
+
+        if (spawnedThisWave < enemiesPerWave)
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0f) SpawnEnemy();
+        }
+        else if (aliveEnemies == 0)
+        {
+            GameManager.Instance?.CompleteWave(waveIndex);
+            if (waveIndex >= totalWaves) GameManager.Instance?.WinGame();
+            else
+            {
+                waitingForNextWave = true;
+                timer = timeBetweenWaves;
+            }
         }
     }
+
+    private void StartWave()
+    {
+        waitingForNextWave = false;
+        waveIndex++;
+        spawnedThisWave = 0;
+        timer = 0f;
+        GameManager.Instance?.SetCurrentWave(waveIndex);
+    }
+
     private void SpawnEnemy()
     {
-        GameObject spawnObject = GameObject.Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        spawnObject.transform.position = transform.position;
+        if (enemyPrefab == null)
+        {
+            Debug.LogError("WaveSpawner needs an Enemy Prefab assigned.", this);
+            enabled = false;
+            return;
+        }
+
+        if (Waypoints.points == null || Waypoints.points.Length == 0)
+        {
+            Debug.LogError("WaveSpawner cannot spawn enemies because no Waypoints are configured.", this);
+            enabled = false;
+            return;
+        }
+
+        GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        Enemy enemyComponent = enemy.GetComponent<Enemy>();
+        if (enemyComponent == null)
+        {
+            Debug.LogError("The assigned enemy prefab needs an Enemy component.", enemy);
+            Destroy(enemy);
+            enabled = false;
+            return;
+        }
+
+        aliveEnemies++;
+        spawnedThisWave++;
+        enemyComponent.Initialize(this);
+        timer = spawnInterval;
+    }
+
+    public void NotifyEnemyRemoved(bool defeated)
+    {
+        aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
+        if (defeated) GameManager.Instance?.RegisterEnemyDefeated(25);
+    }
+
+    [ContextMenu("Debug/Show Victory Result")]
+    private void DebugShowVictory()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.WinGame();
+    }
+
+    [ContextMenu("Debug/Show Defeat Result")]
+    private void DebugShowDefeat()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Lives = 0;
+            GameManager.Instance.EndGame();
+        }
     }
 }
