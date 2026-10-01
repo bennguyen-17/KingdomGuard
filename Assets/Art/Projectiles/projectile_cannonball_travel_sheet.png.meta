@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: b03cb0d4cb78d9a4580ef65c78c06247
+guid: ee8122c07351e1749bbeea6626a7d58d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7316229441688303391
-    second: Tower_0
+      213: 672313893764000761
+    second: projectile_cannonball_travel_sheet_0
+  - first:
+      213: 3319310926749300539
+    second: projectile_cannonball_travel_sheet_1
+  - first:
+      213: 7512536634504385089
+    second: projectile_cannonball_travel_sheet_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tower_0
+      name: projectile_cannonball_travel_sheet_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 25
-        width: 122
-        height: 186
+        x: 2
+        y: 2
+        width: 20
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,8 +136,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f17f5170ae7788560800000000000000
-      internalID: 7316229441688303391
+      spriteID: 9fbec5f9ce9845900800000000000000
+      internalID: 672313893764000761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_cannonball_travel_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 2
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b37f6ff83bf801e20800000000000000
+      internalID: 3319310926749300539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: projectile_cannonball_travel_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 2
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1421eb51444e14860800000000000000
+      internalID: 7512536634504385089
       vertices: []
       indices: 
       edges: []
@@ -150,7 +200,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Tower_0: 7316229441688303391
+      projectile_cannonball_travel_sheet_0: 672313893764000761
+      projectile_cannonball_travel_sheet_1: 3319310926749300539
+      projectile_cannonball_travel_sheet_2: 7512536634504385089
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
