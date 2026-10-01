@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fc4982f5c1dbe4d4cac0527ec7e31529
+guid: c65f1b1389fedc842baf3ed8c3694231
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4346244404228752641
-    second: Arrow_0
+      213: -8735398849735464583
+    second: tower_cannon_lv2_64x64_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arrow_0
+      name: tower_cannon_lv2_64x64_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 25
-        width: 45
-        height: 14
+        x: 3
+        y: 0
+        width: 61
+        height: 61
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ffa7ae2edb90fa3c0800000000000000
-      internalID: -4346244404228752641
+      spriteID: 979692e3701a5c680800000000000000
+      internalID: -8735398849735464583
       vertices: []
       indices: 
       edges: []
@@ -150,7 +150,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Arrow_0: -4346244404228752641
+      tower_cannon_lv2_64x64_0: -8735398849735464583
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
