@@ -4,7 +4,6 @@ public class WaveSpawner : MonoBehaviour
 {
     [Header("Wave configuration")]
     public GameObject enemyPrefab;
-    public string mainMenuScene = "MainMenu";
     [Min(1)] public int totalWaves = 10;
     [Min(1)] public int enemiesPerWave = 5;
     [Min(0.1f)] public float spawnInterval = 1.5f;
@@ -15,6 +14,7 @@ public class WaveSpawner : MonoBehaviour
     private int aliveEnemies;
     private float timer;
     private bool waitingForNextWave;
+    private bool started;
 
     private void Start()
     {
@@ -24,16 +24,13 @@ public class WaveSpawner : MonoBehaviour
         totalWaves = Mathf.Max(1, totalWaves);
         enemiesPerWave = Mathf.Max(1, enemiesPerWave);
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.ConfigureWaves(totalWaves);
-            GameManager.Instance.ConfigureMainMenu(mainMenuScene);
-        }
-        StartWave();
     }
 
     private void Update()
     {
         if (GameManager.GameIsOver) return;
+        if (!started) return;
         if (GameManager.Lives <= 0)
         {
             GameManager.Instance?.EndGame();
@@ -71,6 +68,25 @@ public class WaveSpawner : MonoBehaviour
         spawnedThisWave = 0;
         timer = 0f;
         GameManager.Instance?.SetCurrentWave(waveIndex);
+    }
+
+    public void BeginWaveSequence()
+    {
+        ResetForMenu();
+        started = true;
+        StartWave();
+    }
+
+    public void ResetForMenu()
+    {
+        foreach (Enemy enemy in FindObjectsByType<Enemy>())
+            Destroy(enemy.gameObject);
+        started = false;
+        waveIndex = 0;
+        spawnedThisWave = 0;
+        aliveEnemies = 0;
+        timer = 0f;
+        waitingForNextWave = false;
     }
 
     private void SpawnEnemy()
