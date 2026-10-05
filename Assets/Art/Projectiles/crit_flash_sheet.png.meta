@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: ee8122c07351e1749bbeea6626a7d58d
+guid: 15dd1f239decab24ca513359c560f0eb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 672313893764000761
-    second: projectile_cannonball_travel_sheet_0
+      213: -8215045951832628934
+    second: crit_flash_sheet_0
   - first:
-      213: 3319310926749300539
-    second: projectile_cannonball_travel_sheet_1
+      213: 7303150812553813628
+    second: crit_flash_sheet_1
   - first:
-      213: 7512536634504385089
-    second: projectile_cannonball_travel_sheet_2
+      213: -8922281466035143062
+    second: crit_flash_sheet_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,67 +121,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: projectile_cannonball_travel_sheet_0
+      name: crit_flash_sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
-        height: 24
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9fbec5f9ce9845900800000000000000
-      internalID: 672313893764000761
+      spriteID: 3e605adb65e4210429476065c7b66507
+      internalID: 1770145599
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: projectile_cannonball_travel_sheet_1
+      name: crit_flash_sheet_1
       rect:
         serializedVersion: 2
-        x: 24
+        x: 32
         y: 0
-        width: 24
-        height: 24
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b37f6ff83bf801e20800000000000000
-      internalID: 3319310926749300539
+      spriteID: b7d9c8af12d28a7408c8342c81b8926d
+      internalID: 1379669462
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: projectile_cannonball_travel_sheet_2
+      name: crit_flash_sheet_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 64
         y: 0
-        width: 24
-        height: 24
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1421eb51444e14860800000000000000
-      internalID: 7512536634504385089
+      spriteID: 8ffa382163554b845b8d6daca428cc8c
+      internalID: 916722381
       vertices: []
       indices: 
       edges: []
@@ -190,7 +190,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e4645aaa087fb4f4ab226d0749055a49
+    spriteID: 522d22b99c5b4d94eb85c69ff9db8aa6
     internalID: 0
     vertices: []
     indices: 
@@ -200,11 +200,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":24.0,"y":24.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      projectile_cannonball_travel_sheet_0: 672313893764000761
-      projectile_cannonball_travel_sheet_1: 3319310926749300539
-      projectile_cannonball_travel_sheet_2: 7512536634504385089
+      crit_flash_sheet_0: 1770145599
+      crit_flash_sheet_1: 1379669462
+      crit_flash_sheet_2: 916722381
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
