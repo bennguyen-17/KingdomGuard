@@ -1,11 +1,19 @@
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Waypoints : MonoBehaviour
 {
-    public static Transform[] points; 
+    [HideInInspector]
+    public Transform[] points;
 
-    void Awake() 
+    void Awake()
+    {
+        InitializePoints();
+    }
+
+    public void InitializePoints()
     {
         points = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
@@ -14,6 +22,26 @@ public class Waypoints : MonoBehaviour
         }
     }
 
+    public Transform GetPoint(int index)
+    {
+        if (points == null || points.Length == 0) InitializePoints();
+        if (points != null && index >= 0 && index < points.Length)
+        {
+            return points[index];
+        }
+        return null;
+    }
+
+    public int PointCount
+    {
+        get
+        {
+            if (points == null || points.Length == 0) InitializePoints();
+            return points != null ? points.Length : 0;
+        }
+    }
+
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -29,4 +57,5 @@ public class Waypoints : MonoBehaviour
             }
         }
     }
+#endif
 }

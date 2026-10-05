@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,25 +10,42 @@ public class Enemy : MonoBehaviour
     private float health = 100f;
     private WaveSpawner waveSpawner;
     private bool removedFromWave;
+    private Waypoints path;
 
-    public void Initialize(WaveSpawner spawner)
+    public void Initialize(WaveSpawner spawner, Waypoints assignedPath)
     {
         waveSpawner = spawner;
+        path = assignedPath;
+
+        if (path != null && path.PointCount > 0)
+        {
+            targetPoint = path.GetPoint(0);
+            if (targetPoint != null)
+            {
+                transform.position = targetPoint.position;
+            }
+        }
     }
+
     void Start()
     {
-        targetPoint = Waypoints.points[0];
+        if (targetPoint == null && path != null && path.PointCount > 0)
+        {
+            targetPoint = path.GetPoint(0);
+        }
     }
 
     void Update()
     {
+        if (targetPoint == null) return;
+
         transform.position = Vector2.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
 
         if (Vector2.Distance(transform.position, targetPoint.position) < 0.1f)
         {
             targetIndex++;
 
-            if (targetIndex >= Waypoints.points.Length)
+            if (path == null || targetIndex >= path.PointCount)
             {
                 GameManager.Lives -= 1;
                 NotifyRemoved(false);
@@ -36,9 +53,10 @@ public class Enemy : MonoBehaviour
                 return;
             }
 
-            targetPoint = Waypoints.points[targetIndex];
+            targetPoint = path.GetPoint(targetIndex);
         }
     }
+
     public void TakeDamage(float amount)
     {
         health -= amount; // Bị trừ máu
@@ -48,6 +66,7 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+
     void Die()
     {
         NotifyRemoved(true);

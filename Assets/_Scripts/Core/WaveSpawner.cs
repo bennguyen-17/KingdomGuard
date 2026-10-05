@@ -10,6 +10,9 @@ public class WaveSpawner : MonoBehaviour
     [Min(0.1f)] public float spawnInterval = 1.5f;
     [Min(0f)] public float timeBetweenWaves = 3f;
 
+    [Header("Path configuration (Để trống sẽ tự động tìm tất cả đường trong Scene)")]
+    public Waypoints[] paths;
+
     private int waveIndex;
     private int spawnedThisWave;
     private int aliveEnemies;
@@ -20,6 +23,12 @@ public class WaveSpawner : MonoBehaviour
     {
         if (GameManager.Instance == null)
             new GameObject("GameManager").AddComponent<GameManager>();
+
+        // Tự động tìm tất cả các con đường nếu chưa kéo thả trong Inspector
+        if (paths == null || paths.Length == 0)
+        {
+            paths = FindObjectsByType<Waypoints>(FindObjectsSortMode.None);
+        }
 
         totalWaves = Mathf.Max(1, totalWaves);
         enemiesPerWave = Mathf.Max(1, enemiesPerWave);
@@ -82,14 +91,29 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        if (Waypoints.points == null || Waypoints.points.Length == 0)
+        // Đảm bảo luôn có danh sách đường đi
+        if (paths == null || paths.Length == 0)
         {
-            Debug.LogError("WaveSpawner cannot spawn enemies because no Waypoints are configured.", this);
+            paths = FindObjectsByType<Waypoints>(FindObjectsSortMode.None);
+        }
+
+        if (paths == null || paths.Length == 0)
+        {
+            Debug.LogError("WaveSpawner cannot spawn enemies because no Waypoints are configured or found in the scene.", this);
             enabled = false;
             return;
         }
 
-        GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        // Luân phiên chia đều quái ra các con đường trong Scene
+        Waypoints chosenPath = paths[spawnedThisWave % paths.Length];
+        if (chosenPath == null || chosenPath.PointCount == 0)
+        {
+            Debug.LogError("The chosen path has no waypoints configured.", this);
+            return;
+        }
+
+        Vector3 spawnPosition = chosenPath.GetPoint(0).position;
+        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         Enemy enemyComponent = enemy.GetComponent<Enemy>();
         if (enemyComponent == null)
         {
@@ -101,7 +125,7 @@ public class WaveSpawner : MonoBehaviour
 
         aliveEnemies++;
         spawnedThisWave++;
-        enemyComponent.Initialize(this);
+        enemyComponent.Initialize(this, chosenPath);
         timer = spawnInterval;
     }
 
