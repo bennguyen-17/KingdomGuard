@@ -691,11 +691,11 @@ PlayerSettings:
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: e6016db7-e4c8-423a-8b3d-f1f3b8ccde20
+  cloudProjectId: cc6f3bd6-8b4f-4349-ae0f-0318dcecdc5c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: KingdomGuard (1)
-  organizationId: nie1408
+  organizationId: nguyenhoanggiabao17082006
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
