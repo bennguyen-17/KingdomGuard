@@ -27,7 +27,7 @@ public class WaveSpawner : MonoBehaviour
         // Tự động tìm tất cả các con đường nếu chưa kéo thả trong Inspector
         if (paths == null || paths.Length == 0)
         {
-            paths = FindObjectsByType<Waypoints>(FindObjectsSortMode.None);
+            paths = FindObjectsByType<Waypoints>();
         }
 
         totalWaves = Mathf.Max(1, totalWaves);
@@ -110,7 +110,7 @@ public class WaveSpawner : MonoBehaviour
         // Đảm bảo luôn có danh sách đường đi
         if (paths == null || paths.Length == 0)
         {
-            paths = FindObjectsByType<Waypoints>(FindObjectsSortMode.None);
+            paths = FindObjectsByType<Waypoints>();
         }
 
         if (paths == null || paths.Length == 0)

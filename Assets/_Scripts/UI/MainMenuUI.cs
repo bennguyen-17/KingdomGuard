@@ -11,9 +11,11 @@ public class MainMenuUI : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private Canvas menuCanvas;
     [SerializeField] private Image backgroundImage;
+#pragma warning disable 0414
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+#pragma warning restore 0414
 
     private void Awake()
     {
@@ -77,7 +79,7 @@ public class MainMenuUI : MonoBehaviour
 
         // 1. Canvas setup
         Canvas canvas = GetComponentInParent<Canvas>();
-        if (canvas == null) canvas = FindFirstObjectByType<Canvas>();
+        if (canvas == null) canvas = FindAnyObjectByType<Canvas>();
 
         if (canvas == null)
         {
