@@ -37,7 +37,7 @@ public static class KingdomGuardUISetup
     {
         ConfigureUISprites();
 
-        MainMenuUI menuUI = Object.FindFirstObjectByType<MainMenuUI>();
+        MainMenuUI menuUI = Object.FindAnyObjectByType<MainMenuUI>();
         if (menuUI == null)
         {
             GameObject menuGO = new GameObject("MainMenuManager");
@@ -51,13 +51,13 @@ public static class KingdomGuardUISetup
         var activeScene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(activeScene);
 
-        Debug.Log("✅ MainMenu UI Canvas setup successfully completed in scene: " + activeScene.name);
+        Debug.Log("MainMenu UI Canvas setup successfully completed in scene: " + activeScene.name);
     }
 
     [MenuItem("Tools/KingdomGuard/3. Setup WIN & LOSE UI in Scene")]
     public static void SetupWinLoseUIInCurrentScene()
     {
-        GameManager gm = Object.FindFirstObjectByType<GameManager>();
+        GameManager gm = Object.FindAnyObjectByType<GameManager>();
         if (gm == null)
         {
             GameObject gmGO = new GameObject("GameManager");
@@ -66,7 +66,7 @@ public static class KingdomGuardUISetup
             Debug.Log("[KingdomGuardUISetup] Created GameManager object in scene.");
         }
 
-        UIManager uiManager = Object.FindFirstObjectByType<UIManager>();
+        UIManager uiManager = Object.FindAnyObjectByType<UIManager>();
         if (uiManager == null)
         {
             GameObject uiGO = new GameObject("UIManager");
@@ -80,7 +80,7 @@ public static class KingdomGuardUISetup
         var activeScene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(activeScene);
 
-        Debug.Log("✅ WIN & LOSE UI Canvas setup successfully completed in scene: " + activeScene.name);
+        Debug.Log("WIN & LOSE UI Canvas setup successfully completed in scene: " + activeScene.name);
     }
 }
 #endif
