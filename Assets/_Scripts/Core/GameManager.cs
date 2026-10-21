@@ -29,6 +29,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         resultUI = GetComponent<UIManager>();
         if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();
+
+        if (AudioManager.Instance == null && FindAnyObjectByType<AudioManager>() == null)
+        {
+            GameObject audioObj = new GameObject("AudioManager");
+            audioObj.AddComponent<AudioManager>();
+        }
     }
 
     private void Start()

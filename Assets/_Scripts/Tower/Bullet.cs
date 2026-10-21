@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
@@ -34,6 +34,8 @@ public class Bullet : MonoBehaviour
         {
             enemy.TakeDamage(damage);
         }
+
+        AudioManager.Instance?.PlayHit();
         
         Destroy(gameObject);
     }

@@ -69,6 +69,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        AudioManager.Instance?.PlayEnemyDeath();
         NotifyRemoved(true);
         Destroy(gameObject);
     }

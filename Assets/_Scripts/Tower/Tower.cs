@@ -51,7 +51,7 @@ public class Tower : MonoBehaviour
         }
     }
     
-       void Shoot()
+    void Shoot()
     {
         GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         
@@ -61,5 +61,7 @@ public class Tower : MonoBehaviour
         {
             bulletScript.Seek(target);
         }
+
+        AudioManager.Instance?.PlayArrowShoot();
     }
 }

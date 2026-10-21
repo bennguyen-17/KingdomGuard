@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
     {
         if (screenShown) return;
         screenShown = true;
+        AudioManager.Instance?.PlayVictory();
         Show(winPanel, data, true);
     }
 
@@ -55,6 +56,7 @@ public class UIManager : MonoBehaviour
     {
         if (screenShown) return;
         screenShown = true;
+        AudioManager.Instance?.PlayDefeat();
         Show(losePanel, data, false);
     }
 
@@ -286,6 +288,7 @@ public class UIManager : MonoBehaviour
         colors.fadeDuration = 0.1f;
         button.colors = colors;
         button.transition = Selectable.Transition.ColorTint;
+        button.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
         PixelButtonMotion motion = frame.gameObject.AddComponent<PixelButtonMotion>();
         motion.enabled = true;
 
@@ -624,6 +627,7 @@ public class UIManager : MonoBehaviour
         Stretch(text.rectTransform);
         text.rectTransform.offsetMin = new Vector2(4f, 2f);
         text.rectTransform.offsetMax = new Vector2(-4f, -2f);
+        button.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
         return button;
     }
 
