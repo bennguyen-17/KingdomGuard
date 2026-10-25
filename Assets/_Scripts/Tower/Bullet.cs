@@ -1,13 +1,22 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     private Transform target;
     public float speed = 10f;
     public float damage = 20f;
+
     public void Seek(Transform _target)
     {
         target = _target;
+    }
+
+    // Tower truyền damage / tốc độ theo cấp hiện tại
+    public void Init(Transform _target, float _damage, float _speed)
+    {
+        target = _target;
+        damage = _damage;
+        speed = _speed;
     }
 
     void Update()
@@ -26,7 +35,6 @@ public class Bullet : MonoBehaviour
         }
     }
 
-
     void HitTarget()
     {
         Enemy enemy = target.GetComponent<Enemy>();
@@ -34,7 +42,7 @@ public class Bullet : MonoBehaviour
         {
             enemy.TakeDamage(damage);
         }
-        
+
         Destroy(gameObject);
     }
 }

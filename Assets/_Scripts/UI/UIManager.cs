@@ -113,6 +113,20 @@ public class UIManager : MonoBehaviour
     private void BuildMenus(Transform parent)
     {
         mainMenuRoot = CreateMenuRoot("MainMenuPanel", parent, out mainMenuGroup);
+        Sprite bgSprite = Resources.Load<Sprite>("UI/MainMenu_BG");
+if (bgSprite != null)
+{
+    Image bg = MakeImage("Main Menu Background", mainMenuRoot.transform, Color.white);
+    bg.sprite = bgSprite;
+    bg.raycastTarget = false;
+    RectTransform bgRect = bg.rectTransform;
+    bgRect.anchorMin = bgRect.anchorMax = new Vector2(0.5f, 0.5f);
+    bgRect.pivot = new Vector2(0.5f, 0.5f);
+    bgRect.anchoredPosition = Vector2.zero;
+    AspectRatioFitter fit = bg.gameObject.AddComponent<AspectRatioFitter>();
+    fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+    fit.aspectRatio = (float)bgSprite.texture.width / bgSprite.texture.height;
+}
         Image atmosphere = MakeImage("Pixel World Tint", mainMenuRoot.transform, new Color32(12, 54, 55, 35));
         Stretch(atmosphere.rectTransform);
         atmosphere.raycastTarget = false;

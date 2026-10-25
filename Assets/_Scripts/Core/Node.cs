@@ -1,14 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class Node : MonoBehaviour
+// Một chỗ đặt tháp (nhóm các ô basefortower liền nhau). Không gắn vào scene.
+public class Node
 {
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    public Vector3 Center;
+    public Tower Tower;
+    public bool Occupied => Tower != null;
 }
