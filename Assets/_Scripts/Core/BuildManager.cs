@@ -3,14 +3,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
-// Đặt tháp kiểu Kingdom Rush:
-//  - Chỗ đặt tháp lấy từ tilemap "basefortower" (các ô liền nhau = 1 chỗ).
-//  - Click chỗ trống  -> menu tròn chọn tháp (Archer / Cannon / Magic).
-//  - Click tháp       -> menu Upgrade (trên) / Sell (dưới) + vòng tròn tầm bắn.
-//  - Mọi lựa chọn phải click 2 lần: lần 1 = chọn (hiện tầm bắn + giá), lần 2 = xác nhận.
+
 public class BuildManager : MonoBehaviour
 {
-    [Header("BuildManager.prefab đã gán sẵn các ô này")]
+    [Header("BuildManager.prefab")]
     public GameObject towerPrefab;
     public TowerDefinition[] towerTypes;
 
@@ -22,7 +18,7 @@ public class BuildManager : MonoBehaviour
     [Range(0.05f, 0.2f)] public float menuIconScreenFraction = 0.1f;
     [Tooltip("Khoảng cách từ tâm chỗ đặt tháp tới icon, tính theo số lần cỡ icon")]
     public float menuRadiusInIcons = 1.7f;
-    [Range(0f, 1f)] public float sellRefund = 0.6f;
+    [Range(0f, 1f)] public float sellRefund = 0.5f;
 
     private enum Kind { Build, Upgrade, Sell }
 
@@ -391,10 +387,6 @@ public class BuildManager : MonoBehaviour
 
         if (labelStyle == null)
             labelStyle = new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold };
-
-        labelStyle.fontSize = 16;
-        DrawText(new Rect(10, 8, 320, 28), $"Gold: {GameManager.Money}    Lives: {GameManager.Lives}",
-                 Color.white, TextAnchor.MiddleLeft);
 
         if (messageTimer > 0f)
             DrawText(new Rect(10, 36, 400, 28), message, new Color(1f, 0.6f, 0.4f), TextAnchor.MiddleLeft);

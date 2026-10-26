@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43592f6c758ee5846a6f613112bb765c, type: 3}
   m_Name: Cannon_Lv2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  range: 4
-  shootInterval: 1.8
+  range: 2.8
+  shootInterval: 1.35
   projectileSpeed: 10
   projectileDuration: 2
-  damage: 80
-  cost: 150
+  damage: 39
+  cost: 60
   sprite: {fileID: -8735398849735464583, guid: c65f1b1389fedc842baf3ed8c3694231, type: 3}
   bulletPrefab: {fileID: 1053547120077282029, guid: 84ab9760dde975346be4b7b5b0c339b5, type: 3}
+  splashRadius: 1
+  critChance: 0.15
+  critMultiplier: 1.5
+  isCannon: 1
