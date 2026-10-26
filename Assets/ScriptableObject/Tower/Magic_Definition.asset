@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d29b0221b684c40b130ffc6613a8e2, type: 3}
+  m_Name: Magic_Definition
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefinition
+  towerName: Magic
+  icon: {fileID: -2523242555986942624, guid: 3b4cf19276a57644f8e15b4bba84639e, type: 3}
+  levels:
+  - {fileID: 11400000, guid: 8b24a50c6fe3a48499a29ad3d95b95f8, type: 2}
+  - {fileID: 11400000, guid: 5fcf9e6a06474464c9f8216ea2caf365, type: 2}
+  - {fileID: 11400000, guid: c738c471a1cfa1a4695dcff306b5fc5c, type: 2}

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d29b0221b684c40b130ffc6613a8e2, type: 3}
+  m_Name: Cannon_Definition
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefinition
+  towerName: Cannon
+  icon: {fileID: 3675006432012819440, guid: 232cf9e2a31de11499d39c6a462bec43, type: 3}
+  levels:
+  - {fileID: 11400000, guid: 962d1febe2a11d34baa5adc6bb17341e, type: 2}
+  - {fileID: 11400000, guid: 59f7fe3b0e7967d41aec638ac674297a, type: 2}
+  - {fileID: 11400000, guid: 603b462a90ff42542b7e87ef5d372918, type: 2}

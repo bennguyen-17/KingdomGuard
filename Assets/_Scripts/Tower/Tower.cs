@@ -2,64 +2,85 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [SerializeField] private TowerData data;
-    public GameObject bulletPrefab;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    public TowerDefinition Definition { get; private set; }
+    public int Level { get; private set; }
+    public int TotalSpent { get; private set; }   // để tính tiền hoàn khi bán
+
+    private TowerData Stats => Definition.levels[Level];
+    public float Range => Definition != null ? Stats.range : 0f;
+    public bool CanUpgrade => Definition != null && Level + 1 < Definition.levels.Length;
+    public int UpgradeCost => CanUpgrade ? Definition.levels[Level + 1].cost : 0;
+    public float NextRange => CanUpgrade ? Definition.levels[Level + 1].range : Range;
+
     private Transform target;
+    private float fireCountdown;
 
-    // Các biến lấy từ TowerData (hoặc dùng trực tiếp nếu chưa gắn TowerData)
-    private float range => data != null ? data.range : 4f;
-    private float fireRate => data != null ? (1f / data.shootInterval) : 1f;
-    private float fireCountdown = 0f;
-
-    void Start()
+    // BuildManager gọi ngay sau khi Instantiate
+    public void Setup(TowerDefinition definition)
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        Definition = definition;
+        Level = 0;
+        TotalSpent = Stats.cost;
+        ApplyVisual();
     }
-    
-    void UpdateTarget()
+
+    public void Upgrade()
     {
+        if (!CanUpgrade) return;
+        Level++;
+        TotalSpent += Stats.cost;
+        ApplyVisual();
+    }
+
+    private void ApplyVisual()
+    {
+        if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null && Stats.sprite != null) spriteRenderer.sprite = Stats.sprite;
+    }
+
+    private void Start()
+    {
+        InvokeRepeating(nameof(UpdateTarget), 0f, 0.25f);
+    }
+
+    private void UpdateTarget()
+    {
+        if (Definition == null) return;
+
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        float shortestDistance = Mathf.Infinity; 
-        GameObject nearestEnemy = null;
-        
+        float shortest = Mathf.Infinity;
+        Transform nearest = null;
+
         foreach (GameObject enemy in enemies)
         {
-            float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy < shortestDistance)
-            {
-                shortestDistance = distanceToEnemy; 
-                nearestEnemy = enemy;
-            }
+            float d = Vector2.Distance(transform.position, enemy.transform.position);
+            if (d < shortest) { shortest = d; nearest = enemy.transform; }
         }
-        
-        if (nearestEnemy != null && shortestDistance <= range)
-            target = nearestEnemy.transform;
-        else
-            target = null;
+
+        target = (nearest != null && shortest <= Range) ? nearest : null;
     }
-   
-    void Update()
+
+    private void Update()
     {
-        if (target == null) return; 
-        
-        fireCountdown -= Time.deltaTime; 
+        if (Definition == null || target == null) return;
+
+        fireCountdown -= Time.deltaTime;
         if (fireCountdown <= 0f)
         {
-            Shoot(); 
-            fireCountdown = 1f / fireRate; 
+            Shoot();
+            fireCountdown = Mathf.Max(0.05f, Stats.shootInterval);
         }
     }
-    
-       void Shoot()
+
+    private void Shoot()
     {
-        GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        
-        Bullet bulletScript = bulletGO.GetComponent<Bullet>();
-        
-        if (bulletScript != null)
-        {
-            bulletScript.Seek(target);
-        }
+        GameObject prefab = Stats.bulletPrefab;
+        if (prefab == null) return;
+
+        GameObject go = Instantiate(prefab, transform.position, Quaternion.identity);
+        if (go.TryGetComponent(out Bullet bullet))
+            bullet.Init(target, Stats.damage, Stats.projectileSpeed);
     }
 }
