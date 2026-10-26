@@ -62,6 +62,9 @@ public class Tower : MonoBehaviour
             bulletScript.Seek(target);
         }
 
-        AudioManager.Instance?.PlayArrowShoot();
+        if (data != null && data.shotSound == TowerData.ShotSound.Cannon)
+            AudioManager.Instance?.PlayCannonShoot();
+        else if (data == null || data.shotSound == TowerData.ShotSound.Arrow)
+            AudioManager.Instance?.PlayArrowShoot();
     }
 }

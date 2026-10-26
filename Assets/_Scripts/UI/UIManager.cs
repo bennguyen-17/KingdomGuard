@@ -96,6 +96,7 @@ public class UIManager : MonoBehaviour
         winPanel.root.SetActive(false);
         losePanel.root.SetActive(false);
         BuildMenus(canvasObject.transform);
+        canvasObject.AddComponent<AudioSettingsUI>();
         transitionCurtain = MakeImage("Scene Transition", canvasObject.transform, new Color32(13, 22, 25, 255));
         Stretch(transitionCurtain.rectTransform);
         transitionCurtain.raycastTarget = true;
@@ -309,6 +310,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowMainMenu()
     {
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Menu);
         if (mainMenuRoot == null) return;
         StopMenuTransition();
         winPanel.root.SetActive(false);

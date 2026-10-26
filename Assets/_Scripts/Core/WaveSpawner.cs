@@ -66,12 +66,14 @@ public class WaveSpawner : MonoBehaviour
             {
                 waitingForNextWave = true;
                 timer = timeBetweenWaves;
+                AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Preparation);
             }
         }
     }
 
     private void StartWave()
     {
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Battle);
         waitingForNextWave = false;
         waveIndex++;
         spawnedThisWave = 0;

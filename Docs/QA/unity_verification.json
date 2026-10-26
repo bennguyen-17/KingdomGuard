@@ -1,0 +1,30 @@
+{
+    "unityVersion": "6000.6.0f1",
+    "passed": [
+        "Runtime bootstrap creates AudioManager and GameManager",
+        "All 12 runtime clips import as AudioClip",
+        "Menu uses preparation music state",
+        "Audio settings are available on runtime canvas",
+        "Settings panel exposes two sliders",
+        "Pointer events on slider map to expected music volume",
+        "Keyboard navigation increases selected slider value",
+        "Sliders update separate music/effects volumes",
+        "Volume values clamp to zero and one",
+        "Volume changes are persisted",
+        "Duplicate manager is removed",
+        "Preparation state selects quiet track",
+        "Starting a wave selects battle music",
+        "Wave spawns configured enemy on waypoint path",
+        "Clearing final wave triggers victory and freezes gameplay",
+        "Victory stops background combat music",
+        "Returning to menu resets result and music state",
+        "Zero lives triggers defeat with result audio state",
+        "Audio singleton survives Level 2 transition",
+        "Volume survives scene transition",
+        "Level 3 initializes game and audio controls",
+        "Level 3 loads all four waypoint paths"
+    ],
+    "failure": "",
+    "build": "Succeeded; errors=0; warnings=2",
+    "legacyAudioIncluded": false
+}

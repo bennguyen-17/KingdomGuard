@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour
             if (path == null || targetIndex >= path.PointCount)
             {
                 GameManager.Lives -= 1;
+                AudioManager.Instance?.PlayBaseDamage();
                 NotifyRemoved(false);
                 Destroy(gameObject);
                 return;

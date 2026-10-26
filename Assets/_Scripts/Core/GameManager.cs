@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         GameIsOver = false;
         Time.timeScale = 1f;
+        AudioManager.EnsureInstance();
         resultUI = GetComponent<UIManager>();
         if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();
 

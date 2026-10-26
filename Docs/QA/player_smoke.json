@@ -1,0 +1,25 @@
+﻿{
+    "exit_code":  0,
+    "scene_passes":  3,
+    "complete":  true,
+    "build_files":  [
+                        {
+                            "path":  "Builds/QA/KingdomGuard.exe",
+                            "sha256":  "718444F6A718FA668DA96EB0A58445B009673310E6129152A63DBF7A92B8DE00"
+                        },
+                        {
+                            "path":  "Builds/QA/KingdomGuard_Data/resources.assets",
+                            "sha256":  "A0ECEB417A7F44229388DA794476F3C726FF530CF2450C6D750B0D511049ACB4"
+                        },
+                        {
+                            "path":  "Builds/QA/KingdomGuard_Data/Managed/Assembly-CSharp.dll",
+                            "sha256":  "4337420C9F7873DD2E3B702A94ADE2225FB1EC5F3761D36B27833D987135E987"
+                        }
+                    ],
+    "markers":  [
+                    "KG_AUDIO_SMOKE_PASS scene=0",
+                    "KG_AUDIO_SMOKE_PASS scene=1",
+                    "KG_AUDIO_SMOKE_PASS scene=2",
+                    "KG_AUDIO_SMOKE_COMPLETE"
+                ]
+}

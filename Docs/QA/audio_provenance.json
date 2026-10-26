@@ -1,0 +1,34 @@
+{
+  "generator": "Tools/audio_audit.py",
+  "generator_sha256": "0260314f52f9726cba16b91d71e28026ebee2dbf370beb2a5d97bda09372de57",
+  "method": "Original mathematical synthesis; deterministic random seed 301; no external audio samples",
+  "runtime_assets": [
+    "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+    "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
+    "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav",
+    "Assets/Resources/Audio/SFX/SFX_Base_Damage.wav",
+    "Assets/Resources/Audio/SFX/SFX_Build_Failed.wav",
+    "Assets/Resources/Audio/SFX/SFX_Cannon_Shoot.wav",
+    "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
+    "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav",
+    "Assets/Resources/Audio/SFX/SFX_Hit.wav",
+    "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
+    "Assets/Resources/Audio/SFX/SFX_UI_Click.wav",
+    "Assets/Resources/Audio/SFX/SFX_Victory.wav"
+  ],
+  "asset_sha256": {
+    "Assets/Resources/Audio/BGM/BGM_Battle.wav": "7589d1fcba433e0ede601237814800b15a834c7e9f3f5f86326ae1f0bf21337d",
+    "Assets/Resources/Audio/BGM/BGM_Preparation.wav": "8588d2c920d2ac90b0868cb3609d59fb31690ef3bc9bce3972fc48e67a1a7f92",
+    "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav": "a661a3b81c5ea167a67a22cf340ade5310d374e11d8a4bccfd6abbd70c3f23c3",
+    "Assets/Resources/Audio/SFX/SFX_Base_Damage.wav": "fb0aae6a2faf953afe7041276c0b2fcb1b77acd94d61ed7a1c30aaac8c42fc00",
+    "Assets/Resources/Audio/SFX/SFX_Build_Failed.wav": "5c238b54dd640b54a58a20732d3540d39364ef9392d648bfd0ef6ed4e3f335a1",
+    "Assets/Resources/Audio/SFX/SFX_Cannon_Shoot.wav": "d3b4acce8b65ee66e400ee0ec013d029700485d54b9494174db373db98230c38",
+    "Assets/Resources/Audio/SFX/SFX_Defeat.wav": "fdeb051c4ad04c18ba0c84fb23cbd623e614869fbd488e7975323cfba1a0fa06",
+    "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav": "ab54fa4fdbecea5183166ef099b4b90757525dd9340278525c562fbfc0762c62",
+    "Assets/Resources/Audio/SFX/SFX_Hit.wav": "f5ef19cc2c64fb680fb02d1817df6a60adcd0beadd851fecfe718b3df1a3efbc",
+    "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav": "d2f60ede106c8c6480e748f8ddda41b635d131a8d35d6dd9ee3e4ee6924366b2",
+    "Assets/Resources/Audio/SFX/SFX_UI_Click.wav": "76a1075c4e6639e6bb29b3da56c5e3054d1084bca7ac17d8e6523bad025e9a3f",
+    "Assets/Resources/Audio/SFX/SFX_Victory.wav": "1e0cbc8e55c1ac6a8e7b9b180e1c02c05439ec8c88419d1d83d64955b61182b6"
+  },
+  "legacy_folder": "Assets/Audio: unknown external sources per user; preserved, not approved for redistribution"
+}
