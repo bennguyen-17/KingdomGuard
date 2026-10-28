@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static int Money;
-    public int startMoney = 100;
+    public int startMoney = 200;
     public static int Lives;
     public int startLives = 20;
     public static bool GameIsOver { get; private set; }
@@ -36,17 +36,7 @@ public class GameManager : MonoBehaviour
         WaveSpawner spawner = FindAnyObjectByType<WaveSpawner>();
         if (spawner != null) ConfigureWaves(spawner.totalWaves);
         ResetRunStats();
-
-        string pendingScene = PlayerPrefs.GetString(PendingLevelKey, string.Empty);
-        if (pendingScene == SceneManager.GetActiveScene().path)
-        {
-            PlayerPrefs.DeleteKey(PendingLevelKey);
-            BeginGameplay();
-        }
-        else
-        {
-            resultUI.ShowMainMenu();
-        }
+        BeginGameplay();
     }
 
     private void Update()
@@ -110,10 +100,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         GameIsOver = false;
         IsGameplayActive = false;
-        MainMenuUI.Instance?.SetBackgroundVisible(true);
         FindAnyObjectByType<WaveSpawner>()?.ResetForMenu();
         ResetRunStats();
-        resultUI.ShowMainMenu();
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void BeginGameplay()
@@ -121,7 +110,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         GameIsOver = false;
         IsGameplayActive = true;
-        MainMenuUI.Instance?.SetBackgroundVisible(false);
         resultUI.HideMenus();
         FindAnyObjectByType<WaveSpawner>()?.BeginWaveSequence();
     }

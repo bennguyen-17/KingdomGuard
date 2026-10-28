@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43592f6c758ee5846a6f613112bb765c, type: 3}
   m_Name: Magic_Lv2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  range: 5
-  shootInterval: 1.2
+  range: 3.3
+  shootInterval: 1.08
   projectileSpeed: 10
   projectileDuration: 2
-  damage: 55
-  cost: 130
+  damage: 26
+  cost: 90
   sprite: {fileID: -1529642515386227925, guid: 1be5736825dace247b2533af83e3dcf9, type: 3}
   bulletPrefab: {fileID: 1053547120077282029, guid: 84ab9760dde975346be4b7b5b0c339b5, type: 3}
+  splashRadius: 0
+  critChance: 0
+  critMultiplier: 1.5
+  isCannon: 0

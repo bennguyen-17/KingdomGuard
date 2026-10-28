@@ -1,37 +1,88 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [Header("Wave configuration")]
-    public GameObject enemyPrefab;
-    [Min(1)] public int totalWaves = 10;
-    [Min(1)] public int enemiesPerWave = 5;
-    [Min(0.1f)] public float spawnInterval = 1.5f;
-    [Min(0f)] public float timeBetweenWaves = 3f;
+    [System.Serializable]
+    public class WaveDefinition
+    {
+        [Tooltip("Số lượng Goblin")]
+        public int goblinCount = 6;
+        [Tooltip("Số lượng Orc (quái trâu máu)")]
+        public int orcCount = 0;
+        [Tooltip("Khoảng cách giữa các lần sinh quái (giây)")]
+        public float spawnInterval = 1.5f;
+    }
 
-    [Header("Path configuration (Để trống sẽ tự động tìm tất cả đường trong Scene)")]
+    private struct QueuedEnemy
+    {
+        public string enemyName;
+        public float baseHp;
+        public float speed;
+        public int gold;
+        public int castleDmg;
+        public string animName;
+    }
+
+    [Header("Prefabs cho từng loại quái")]
+    [Tooltip("Prefab riêng cho Goblin (nếu để trống sẽ dùng Enemy Prefab)")]
+    public GameObject goblinPrefab;
+    [Tooltip("Prefab riêng cho Orc (nếu để trống sẽ dùng Enemy Prefab)")]
+    public GameObject orcPrefab;
+    [Tooltip("Prefab quái mặc định / dự phòng")]
+    public GameObject enemyPrefab;
+
+    [Header("Wave Configuration (GDD)")]
+    [Tooltip("Tổng số wave cho bản MVP (Mặc định: 6 wave)")]
+    public int totalWaves = 6;
+    [Tooltip("Thời gian nghỉ giữa các wave theo GDD (12 giây)")]
+    public float timeBetweenWaves = 12f;
+
+    [Header("Cấu hình chi tiết 6 Wave chuẩn GDD")]
+    public WaveDefinition[] waveConfigs = new WaveDefinition[]
+    {
+        new WaveDefinition { goblinCount = 5,  orcCount = 0, spawnInterval = 1.5f }, // Wave 1: 5 Goblin
+        new WaveDefinition { goblinCount = 8,  orcCount = 0, spawnInterval = 1.5f }, // Wave 2: 8 Goblin
+        new WaveDefinition { goblinCount = 12, orcCount = 0, spawnInterval = 1.2f }, // Wave 3: 12 Goblin
+        new WaveDefinition { goblinCount = 6,  orcCount = 3, spawnInterval = 1.2f }, // Wave 4: 6 Goblin + 3 Orc
+        new WaveDefinition { goblinCount = 8,  orcCount = 4, spawnInterval = 1.0f }, // Wave 5: 8 Goblin + 4 Orc
+        new WaveDefinition { goblinCount = 10, orcCount = 6, spawnInterval = 0.8f }  // Wave 6: 10 Goblin + 6 Orc
+    };
+
+    [Header("ScriptableObject Quái (Tùy chọn nếu có)")]
+    public EnemyData goblinData;
+    public EnemyData orcData;
+
+    [Header("Path Configuration")]
     public Waypoints[] paths;
 
-    private int waveIndex;
-    private int spawnedThisWave;
-    private int aliveEnemies;
-    private float timer;
-    private bool waitingForNextWave;
-    private bool started;
+    private int waveIndex = 0;
+    private int aliveEnemies = 0;
+    private float timer = 0f;
+    private bool isPreparingWave1 = true; // Cho phép người chơi đặt tháp trước khi bắt đầu!
+    private bool waitingForNextWave = false;
+    private bool started = false;
+
+    private readonly Queue<QueuedEnemy> enemyQueue = new Queue<QueuedEnemy>();
+    private float currentSpawnInterval = 1.5f;
+
+    public int CurrentWave => waveIndex;
+    public float WaveCountdown => timer;
+    public bool IsWaitingForNextWave => waitingForNextWave;
+    public bool IsPreparingWave1 => isPreparingWave1;
 
     private void Start()
     {
         if (GameManager.Instance == null)
             new GameObject("GameManager").AddComponent<GameManager>();
 
-        // Tự động tìm tất cả các con đường nếu chưa kéo thả trong Inspector
         if (paths == null || paths.Length == 0)
         {
             paths = FindObjectsByType<Waypoints>();
         }
 
         totalWaves = Mathf.Max(1, totalWaves);
-        enemiesPerWave = Mathf.Max(1, enemiesPerWave);
         if (GameManager.Instance != null)
             GameManager.Instance.ConfigureWaves(totalWaves);
     }
@@ -40,28 +91,57 @@ public class WaveSpawner : MonoBehaviour
     {
         if (GameManager.GameIsOver) return;
         if (!started) return;
+
+        bool spacePressed = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame);
+
+        // Giai đoạn chuẩn bị: Chờ người chơi đặt tháp xong rồi bấm Bắt đầu Wave 1
+        if (isPreparingWave1)
+        {
+            if (spacePressed)
+            {
+                StartFirstWave();
+            }
+            return;
+        }
+
         if (GameManager.Lives <= 0)
         {
             GameManager.Instance?.EndGame();
             return;
         }
 
+        // Khoảng nghỉ giữa các Wave (12 giây theo GDD)
         if (waitingForNextWave)
         {
+            if (spacePressed)
+            {
+                StartWaveEarly();
+                return;
+            }
+
             timer -= Time.deltaTime;
-            if (timer <= 0f) StartWave();
+            if (timer <= 0f)
+            {
+                StartWave();
+            }
             return;
         }
 
-        if (spawnedThisWave < enemiesPerWave)
+        if (enemyQueue.Count > 0)
         {
             timer -= Time.deltaTime;
-            if (timer <= 0f) SpawnEnemy();
+            if (timer <= 0f)
+            {
+                SpawnNextEnemy();
+            }
         }
         else if (aliveEnemies == 0)
         {
             GameManager.Instance?.CompleteWave(waveIndex);
-            if (waveIndex >= totalWaves) GameManager.Instance?.WinGame();
+            if (waveIndex >= totalWaves)
+            {
+                GameManager.Instance?.WinGame();
+            }
             else
             {
                 waitingForNextWave = true;
@@ -70,44 +150,74 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
+    public void StartFirstWave()
+    {
+        if (isPreparingWave1)
+        {
+            // Kiểm tra: Phải có ít nhất 1 tháp được đặt thì mới cho bắt đầu Wave 1
+            if (FindObjectsByType<Tower>().Length == 0)
+            {
+                Debug.Log("[WaveSpawner] Chưa đặt tháp nào! Vui lòng nhấp vào ô đất để đặt ít nhất 1 tháp trước khi bắt đầu.");
+                return;
+            }
+
+            isPreparingWave1 = false;
+            StartWave();
+        }
+    }
+
     private void StartWave()
     {
         waitingForNextWave = false;
         waveIndex++;
-        spawnedThisWave = 0;
         timer = 0f;
+        enemyQueue.Clear();
+
         GameManager.Instance?.SetCurrentWave(waveIndex);
-    }
 
-    public void BeginWaveSequence()
-    {
-        ResetForMenu();
-        started = true;
-        StartWave();
-    }
+        int configIdx = Mathf.Clamp(waveIndex - 1, 0, waveConfigs.Length - 1);
+        WaveDefinition config = waveConfigs[configIdx];
+        currentSpawnInterval = config.spawnInterval;
 
-    public void ResetForMenu()
-    {
-        foreach (Enemy enemy in FindObjectsByType<Enemy>())
-            Destroy(enemy.gameObject);
-        started = false;
-        waveIndex = 0;
-        spawnedThisWave = 0;
-        aliveEnemies = 0;
-        timer = 0f;
-        waitingForNextWave = false;
-    }
+        int gCount = config.goblinCount;
+        int oCount = config.orcCount;
 
-    private void SpawnEnemy()
-    {
-        if (enemyPrefab == null)
+        while (gCount > 0 || oCount > 0)
         {
-            Debug.LogError("WaveSpawner needs an Enemy Prefab assigned.", this);
-            enabled = false;
-            return;
-        }
+            if (gCount > 0)
+            {
+                enemyQueue.Enqueue(new QueuedEnemy
+                {
+                    enemyName = "Goblin",
+                    baseHp = 50f,
+                    speed = 2.0f,
+                    gold = 5,
+                    castleDmg = 1,
+                    animName = "Goblin_Walk"
+                });
+                gCount--;
+            }
 
-        // Đảm bảo luôn có danh sách đường đi
+            if (oCount > 0)
+            {
+                enemyQueue.Enqueue(new QueuedEnemy
+                {
+                    enemyName = "Orc",
+                    baseHp = 150f,
+                    speed = 1.2f,
+                    gold = 10,
+                    castleDmg = 2,
+                    animName = "Orc_Walk"
+                });
+                oCount--;
+            }
+        }
+    }
+
+    private void SpawnNextEnemy()
+    {
+        if (enemyQueue.Count == 0) return;
+
         if (paths == null || paths.Length == 0)
         {
             paths = FindObjectsByType<Waypoints>();
@@ -115,55 +225,95 @@ public class WaveSpawner : MonoBehaviour
 
         if (paths == null || paths.Length == 0)
         {
-            Debug.LogError("WaveSpawner cannot spawn enemies because no Waypoints are configured or found in the scene.", this);
+            Debug.LogError("WaveSpawner: Không tìm thấy Waypoints nào trong Scene.");
             enabled = false;
             return;
         }
 
-        // Luân phiên chia đều quái ra các con đường trong Scene
-        Waypoints chosenPath = paths[spawnedThisWave % paths.Length];
-        if (chosenPath == null || chosenPath.PointCount == 0)
+        QueuedEnemy next = enemyQueue.Dequeue();
+        Waypoints chosenPath = paths[Random.Range(0, paths.Length)];
+        if (chosenPath == null || chosenPath.PointCount == 0) return;
+
+        GameObject prefabToSpawn = enemyPrefab;
+        if (next.enemyName == "Goblin" && goblinPrefab != null) prefabToSpawn = goblinPrefab;
+        else if (next.enemyName == "Orc" && orcPrefab != null) prefabToSpawn = orcPrefab;
+
+        if (prefabToSpawn == null)
         {
-            Debug.LogError("The chosen path has no waypoints configured.", this);
+            Debug.LogError("WaveSpawner: Chưa gán Enemy Prefab trong Inspector!");
             return;
         }
 
-        Vector3 spawnPosition = chosenPath.GetPoint(0).position;
-        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        Enemy enemyComponent = enemy.GetComponent<Enemy>();
-        if (enemyComponent == null)
+        Vector3 spawnPos = chosenPath.GetPoint(0).position;
+        GameObject obj = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
+        Enemy enemy = obj.GetComponent<Enemy>();
+
+        if (enemy != null)
         {
-            Debug.LogError("The assigned enemy prefab needs an Enemy component.", enemy);
-            Destroy(enemy);
-            enabled = false;
-            return;
+            aliveEnemies++;
+            enemy.Initialize(this, chosenPath);
+
+            float hpMult = 1f + 0.10f * (waveIndex - 1);
+
+            if (next.enemyName == "Goblin" && goblinData != null)
+                enemy.Configure(goblinData, hpMult);
+            else if (next.enemyName == "Orc" && orcData != null)
+                enemy.Configure(orcData, hpMult);
+            else
+                enemy.ConfigureDirect(next.enemyName, next.baseHp, next.speed, next.gold, next.castleDmg, hpMult, next.animName);
         }
 
-        aliveEnemies++;
-        spawnedThisWave++;
-        enemyComponent.Initialize(this, chosenPath);
-        timer = spawnInterval;
+        timer = currentSpawnInterval;
     }
 
-    public void NotifyEnemyRemoved(bool defeated)
+    /// <summary>
+    /// Cho phép người chơi nhấn "Bắt đầu sớm" (Early Start) để bỏ qua đếm ngược 12s giữa wave
+    /// </summary>
+    public void StartWaveEarly()
+    {
+        if (waitingForNextWave)
+        {
+            timer = 0f;
+            StartWave();
+        }
+    }
+
+    public void BeginWaveSequence()
+    {
+        ResetForMenu();
+        started = true;
+        isPreparingWave1 = true; // Luôn chờ người chơi đặt tháp xong mới chạy Wave 1!
+    }
+
+    public void ResetForMenu()
+    {
+        foreach (Enemy enemy in FindObjectsByType<Enemy>())
+        {
+            if (enemy != null) Destroy(enemy.gameObject);
+        }
+
+        started = false;
+        waveIndex = 0;
+        aliveEnemies = 0;
+        timer = 0f;
+        isPreparingWave1 = true;
+        waitingForNextWave = false;
+        enemyQueue.Clear();
+    }
+
+    public void NotifyEnemyRemoved(bool defeated, int reward = 0)
     {
         aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
-        if (defeated) GameManager.Instance?.RegisterEnemyDefeated(25);
-    }
-
-    [ContextMenu("Debug/Show Victory Result")]
-    private void DebugShowVictory()
-    {
-        if (GameManager.Instance != null) GameManager.Instance.WinGame();
-    }
-
-    [ContextMenu("Debug/Show Defeat Result")]
-    private void DebugShowDefeat()
-    {
-        if (GameManager.Instance != null)
+        if (defeated)
         {
-            GameManager.Lives = 0;
-            GameManager.Instance.EndGame();
+            int finalReward = reward > 0 ? reward : 5;
+            GameManager.Instance?.RegisterEnemyDefeated(finalReward);
         }
     }
+
+    public int CurrentWaveIndex => waveIndex;
+    public int TotalWaves => totalWaves;
+    public float NextWaveTimer => timer;
+    public int AliveEnemiesCount => aliveEnemies + (enemyQueue != null ? enemyQueue.Count : 0);
+    public bool HasGameStarted => started;
 }

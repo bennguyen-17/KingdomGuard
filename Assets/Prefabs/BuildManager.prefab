@@ -51,5 +51,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 71d9d59f473286e418b25fe26832fcb4, type: 2}
   baseTilemap: {fileID: 0}
   cam: {fileID: 0}
-  menuRadius: 1.4
-  sellRefund: 0.6
+  menuIconScreenFraction: 0.1
+  menuRadiusInIcons: 1.7
+  sellRefund: 0.5
