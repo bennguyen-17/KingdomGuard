@@ -22,13 +22,12 @@ public static class UIPrefabBaker
 
     private static void CheckAndBake()
     {
-        string marker = "Temp/UIPrefabBaker_v10.done";
+        string marker = "Temp/UIPrefabBaker_v11.done";
         if (!File.Exists(marker))
         {
             BakeHUDPrefab();
             SetupMainMenuGuide();
-            SetupMainMenuEnvironment();
-            try { File.WriteAllText(marker, "v10"); } catch { }
+            try { File.WriteAllText(marker, "v11"); } catch { }
         }
     }
 
@@ -516,18 +515,31 @@ public static class UIPrefabBaker
         MainMenuController mmc = Object.FindAnyObjectByType<MainMenuController>();
         Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") ?? Resources.GetBuiltinResource<Font>("Arial.ttf");
 
-        // 1. Reposition Play & Quit buttons to accommodate Guide button nicely
+        // 0. Remove any leftover environment decorations
+        Transform envTrans = canvasObj.transform.Find("Environment_Decorations");
+        if (envTrans != null)
+        {
+            Object.DestroyImmediate(envTrans.gameObject);
+        }
+
+        Vector2 buttonSize = new Vector2(360f, 72f);
+
+        // 1. Reposition Play & Quit buttons to accommodate Guide button nicely with EQUAL sizes
         Transform playBtn = canvasObj.transform.Find("Play Button");
         Transform quitBtn = canvasObj.transform.Find("Quit Button");
 
         if (playBtn != null)
         {
-            playBtn.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -80f);
+            RectTransform rt = playBtn.GetComponent<RectTransform>();
+            rt.sizeDelta = buttonSize;
+            rt.anchoredPosition = new Vector2(0f, -80f);
         }
 
         if (quitBtn != null)
         {
-            quitBtn.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -240f);
+            RectTransform rt = quitBtn.GetComponent<RectTransform>();
+            rt.sizeDelta = buttonSize;
+            rt.anchoredPosition = new Vector2(0f, -240f);
         }
 
         // 2. Add or update Guide Button
@@ -543,7 +555,7 @@ public static class UIPrefabBaker
             guideBtnObj = existingGuideBtn.gameObject;
         }
 
-        SetRect(guideBtnObj.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(360f, 68f), new Vector2(0f, -160f), new Vector2(0.5f, 0.5f));
+        SetRect(guideBtnObj.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), buttonSize, new Vector2(0f, -160f), new Vector2(0.5f, 0.5f));
         guideBtnObj.GetComponent<Image>().color = new Color32(36, 52, 65, 255);
 
         // Guide Button Label
@@ -871,225 +883,5 @@ public static class UIPrefabBaker
             return string.Compare(a.name, b.name, System.StringComparison.Ordinal);
         });
         return list.ToArray();
-    }
-
-    private static Sprite[] EnsureSprites(string path, int frameWidth, int frameHeight, int count, Vector2 pivot)
-    {
-        Sprite[] sprites = GetAllSprites(path);
-        if (sprites != null && sprites.Length >= count)
-            return sprites;
-
-        TextureImporter ti = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (ti != null)
-        {
-            ti.textureType = TextureImporterType.Sprite;
-            ti.spriteImportMode = SpriteImportMode.Multiple;
-            ti.filterMode = FilterMode.Point;
-            ti.textureCompression = TextureImporterCompression.Uncompressed;
-
-            SpriteMetaData[] metas = new SpriteMetaData[count];
-            string baseName = Path.GetFileNameWithoutExtension(path);
-            for (int i = 0; i < count; i++)
-            {
-                metas[i] = new SpriteMetaData
-                {
-                    name = baseName + "_" + i,
-                    rect = new Rect(i * frameWidth, 0, frameWidth, frameHeight),
-                    alignment = (int)SpriteAlignment.Custom,
-                    pivot = pivot
-                };
-            }
-            ti.spritesheet = metas;
-            EditorUtility.SetDirty(ti);
-            ti.SaveAndReimport();
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
-            sprites = GetAllSprites(path);
-        }
-        return sprites;
-    }
-
-    private static void CreateCloud(Transform parent, Sprite sprite, Vector2 pos, Vector2 size, float speed, float alpha)
-    {
-        GameObject obj = new GameObject("Cloud", typeof(RectTransform), typeof(Image), typeof(UICloudDrifter));
-        obj.transform.SetParent(parent, false);
-        SetRect(obj.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), size, pos, new Vector2(0.5f, 0.5f));
-        Image img = obj.GetComponent<Image>();
-        img.sprite = sprite;
-        img.color = new Color(1f, 1f, 1f, alpha);
-        img.raycastTarget = false;
-        UICloudDrifter drifter = obj.GetComponent<UICloudDrifter>();
-        drifter.Setup(speed, pos.y);
-    }
-
-    private static void CreateAnimatedUI(Transform parent, string name, Sprite[] frames, float fps, Vector2 pos, Vector2 size, int startOffset = 0, float alpha = 1f)
-    {
-        if (frames == null || frames.Length == 0) return;
-
-        GameObject obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(UIFrameAnimator));
-        obj.transform.SetParent(parent, false);
-        SetRect(obj.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), size, pos, new Vector2(0.5f, 0.5f));
-        Image img = obj.GetComponent<Image>();
-        img.raycastTarget = false;
-        img.preserveAspect = true;
-        if (alpha < 1f)
-        {
-            img.color = new Color(1f, 1f, 1f, alpha);
-        }
-        int initialIdx = Mathf.Clamp(startOffset, 0, frames.Length - 1);
-        img.sprite = frames[initialIdx];
-
-        UIFrameAnimator anim = obj.GetComponent<UIFrameAnimator>();
-        anim.Setup(frames, fps, true, startOffset);
-    }
-
-    [MenuItem("Kingdom Guard/Tạo hiệu ứng Môi trường Động vào Main Menu")]
-    public static void SetupMainMenuEnvironment()
-    {
-        string scenePath = "Assets/Scenes/MainMenu.unity";
-        var currentScene = EditorSceneManager.GetActiveScene();
-        bool wasDifferentScene = currentScene.path != scenePath;
-        Scene scene = wasDifferentScene ? EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single) : currentScene;
-
-        GameObject canvasObj = GameObject.Find("MainMenuCanvas");
-        if (canvasObj == null)
-        {
-            Debug.LogError("[UIPrefabBaker] Không tìm thấy MainMenuCanvas!");
-            return;
-        }
-
-        AssetDatabase.ImportAsset("Assets/Art/UI/MainMenu_BG.jpg", ImportAssetOptions.ForceUpdate);
-
-        // 1. Xóa container cũ nếu đã tồn tại để tránh trùng lặp
-        Transform bgTrans = canvasObj.transform.Find("Main Menu Background");
-        if (bgTrans != null)
-        {
-            Image bgImg = bgTrans.GetComponent<Image>();
-            if (bgImg != null)
-            {
-                Sprite cleanSprite = GetFirstSprite("Assets/Art/UI/MainMenu_BG.jpg");
-                if (cleanSprite != null) bgImg.sprite = cleanSprite;
-            }
-        }
-
-        Transform oldEnv = canvasObj.transform.Find("Environment_Decorations");
-        if (oldEnv != null)
-        {
-            Object.DestroyImmediate(oldEnv.gameObject);
-        }
-
-        GameObject envObj = new GameObject("Environment_Decorations", typeof(RectTransform));
-        envObj.transform.SetParent(canvasObj.transform, false);
-        Stretch(envObj.GetComponent<RectTransform>());
-
-        // Đặt ngay sau Pixel World Tint (nằm phía sau Logo và các nút bấm)
-        Transform tintTrans = canvasObj.transform.Find("Pixel World Tint");
-        if (tintTrans != null)
-        {
-            envObj.transform.SetSiblingIndex(tintTrans.GetSiblingIndex() + 1);
-        }
-        else
-        {
-            envObj.transform.SetSiblingIndex(1);
-        }
-
-        // --- A. BỌT SÓNG BIỂN VỖ BỜ (Water Foam Animations) ---
-        Sprite[] foamFrames = EnsureSprites("Assets/Art/UI/Animated/Water_Foam.png", 192, 192, 16, new Vector2(0.5f, 0.5f));
-        if (foamFrames != null && foamFrames.Length > 0)
-        {
-            CreateAnimatedUI(envObj.transform, "Foam_WestCliff", foamFrames, 11f, new Vector2(-684f, -112f), new Vector2(220f, 150f), 0, 0.85f);
-            CreateAnimatedUI(envObj.transform, "Foam_BottomLeft", foamFrames, 10f, new Vector2(-480f, -380f), new Vector2(240f, 160f), 3, 0.85f);
-            CreateAnimatedUI(envObj.transform, "Foam_CenterLagoon", foamFrames, 11f, new Vector2(-195f, -195f), new Vector2(200f, 140f), 6, 0.85f);
-            CreateAnimatedUI(envObj.transform, "Foam_CenterBay", foamFrames, 10.5f, new Vector2(-102f, -347f), new Vector2(220f, 150f), 9, 0.85f);
-            CreateAnimatedUI(envObj.transform, "Foam_VillageCoast", foamFrames, 11f, new Vector2(479f, -347f), new Vector2(260f, 160f), 12, 0.85f);
-            CreateAnimatedUI(envObj.transform, "Foam_EastCliff", foamFrames, 10f, new Vector2(619f, -77f), new Vector2(220f, 150f), 14, 0.85f);
-        }
-
-        // --- B. RẶNG CÂY ĐUNG ĐƯA THEO GIÓ (Swaying Trees) ---
-        Sprite[] pineFrames = EnsureSprites("Assets/Art/UI/Animated/Tree1_Sway.png", 192, 256, 8, new Vector2(0.5f, 0.2f));
-        Sprite[] birchFrames = EnsureSprites("Assets/Art/UI/Animated/Tree3_Sway.png", 192, 192, 8, new Vector2(0.5f, 0.2f));
-
-        Vector2 pineSize = new Vector2(223f, 298f);
-        Vector2 birchSize = new Vector2(223f, 223f);
-
-        if (pineFrames != null && pineFrames.Length > 0)
-        {
-            // Cây thông đơn độc mỏm đá trung tâm
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_CenterCliff", pineFrames, 7f, new Vector2(-33f, 239f), pineSize, 0);
-
-            // Rừng thông trên cao bên phải (trên vách đá)
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest1", pineFrames, 6.5f, new Vector2(72f, 321f), pineSize, 1);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest2", pineFrames, 7.2f, new Vector2(165f, 333f), pineSize, 3);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest3", pineFrames, 6.8f, new Vector2(246f, 321f), pineSize, 5);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest4", pineFrames, 7.0f, new Vector2(328f, 345f), pineSize, 2);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest5", pineFrames, 6.6f, new Vector2(421f, 333f), pineSize, 4);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest6", pineFrames, 6.9f, new Vector2(537f, 356f), pineSize, 1);
-            CreateAnimatedUI(envObj.transform, "Tree_Pine_Forest7", pineFrames, 7.1f, new Vector2(595f, 333f), pineSize, 3);
-        }
-
-        if (birchFrames != null && birchFrames.Length > 0)
-        {
-            // Cụm cây phong vàng bên lâu đài
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Castle1", birchFrames, 6.8f, new Vector2(-649f, 122f), birchSize, 1);
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Castle2", birchFrames, 7.0f, new Vector2(-614f, 28f), birchSize, 4);
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Castle3", birchFrames, 6.5f, new Vector2(-474f, -42f), birchSize, 2);
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Castle4", birchFrames, 7.2f, new Vector2(-428f, -7f), birchSize, 5);
-
-            // Cụm cây phong vàng phía nam làng
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Village1", birchFrames, 6.6f, new Vector2(328f, -300f), birchSize, 0);
-            CreateAnimatedUI(envObj.transform, "Tree_Birch_Village2", birchFrames, 7.0f, new Vector2(398f, -277f), birchSize, 3);
-        }
-
-        // --- C. LÍNH GÁC & CUNG THỦ (Units Idle) ---
-        Sprite[] warriorFrames = GetAllSprites("Assets/Art/TinySwords_Pack/Units/Blue Units/Warrior/Warrior_Idle.png");
-        if (warriorFrames != null && warriorFrames.Length > 0)
-        {
-            // Hiệp sĩ canh gác trước lối lên lâu đài
-            CreateAnimatedUI(envObj.transform, "Knight_Guard", warriorFrames, 8f, new Vector2(-370f, 168f), new Vector2(110f, 110f), 0);
-        }
-
-        Sprite[] archerFrames = GetAllSprites("Assets/Art/TinySwords_Pack/Units/Blue Units/Archer/Archer_Idle.png");
-        if (archerFrames != null && archerFrames.Length > 0)
-        {
-            // Cung thủ đứng chuẩn xác trên sàn gỗ tháp canh góc dưới trái
-            CreateAnimatedUI(envObj.transform, "Watchtower_Archer", archerFrames, 7f, new Vector2(-488f, -25f), new Vector2(90f, 90f), 0);
-        }
-
-        // --- D. ĐÀN CỪU GẶM CỎ (Grazing Sheep) ---
-        Sprite[] sheepFrames = GetAllSprites("Assets/Art/Map_Decorations/Source_Images/Resources/Meat/Sheep/Sheep_Grass.png");
-        if (sheepFrames != null && sheepFrames.Length > 0)
-        {
-            Vector2 sheepSize = new Vector2(64f, 64f);
-            CreateAnimatedUI(envObj.transform, "Sheep_Pasture1", sheepFrames, 6f, new Vector2(165f, -329f), sheepSize, 0);
-            CreateAnimatedUI(envObj.transform, "Sheep_Pasture2", sheepFrames, 5.5f, new Vector2(299f, -329f), sheepSize, 3);
-            CreateAnimatedUI(envObj.transform, "Sheep_Pasture3", sheepFrames, 6.2f, new Vector2(531f, -118f), sheepSize, 5);
-            CreateAnimatedUI(envObj.transform, "Sheep_Pasture4", sheepFrames, 5.8f, new Vector2(293f, -101f), sheepSize, 1);
-            CreateAnimatedUI(envObj.transform, "Sheep_Pasture5", sheepFrames, 6.4f, new Vector2(241f, -77f), sheepSize, 4);
-        }
-
-        // --- E. CLOUDS (Mây bay lững lờ trên tầng cao) ---
-        Sprite cloud1 = GetFirstSprite("Assets/Art/Map_Decorations/Source_Images/Decorations/Clouds/Clouds_01.png");
-        Sprite cloud2 = GetFirstSprite("Assets/Art/Map_Decorations/Source_Images/Decorations/Clouds/Clouds_02.png");
-        Sprite cloud3 = GetFirstSprite("Assets/Art/Map_Decorations/Source_Images/Decorations/Clouds/Clouds_03.png");
-
-        if (cloud1 != null || cloud2 != null)
-        {
-            // Đám mây 1: Tầng cao, to, trôi êm dịu (22px/s)
-            CreateCloud(envObj.transform, cloud1 ?? cloud2, new Vector2(-600f, 380f), new Vector2(480f, 210f), 22f, 0.75f);
-            // Đám mây 2: Tầng giữa, trôi vừa (32px/s)
-            CreateCloud(envObj.transform, cloud2 ?? cloud1, new Vector2(100f, 320f), new Vector2(420f, 180f), 32f, 0.6f);
-            // Đám mây 3: Tầng trên cùng, mờ ảo (18px/s)
-            CreateCloud(envObj.transform, cloud3 ?? cloud1, new Vector2(-200f, 430f), new Vector2(520f, 230f), 18f, 0.65f);
-            // Đám mây 4: Tầng phải, nhỏ nhắn (38px/s)
-            CreateCloud(envObj.transform, cloud1 ?? cloud3, new Vector2(650f, 360f), new Vector2(360f, 160f), 38f, 0.55f);
-        }
-
-        EditorSceneManager.MarkSceneDirty(scene);
-        EditorSceneManager.SaveScene(scene);
-        Debug.Log("[UIPrefabBaker] Đã hoàn thiện toàn bộ Main Menu Động chuẩn phong cách Tiny Swords!");
-
-        if (wasDifferentScene && !string.IsNullOrEmpty(currentScene.path))
-        {
-            EditorSceneManager.OpenScene(currentScene.path, OpenSceneMode.Single);
-        }
     }
 }
