@@ -9,6 +9,10 @@ public class Bullet : MonoBehaviour
     public bool isCannon = false;
     public bool isCrit = false;
 
+    [Header("Visual Effects Prefabs")]
+    [SerializeField] private GameObject impactPrefab;
+    [SerializeField] private GameObject critPrefab;
+
     private Vector3 lastKnownTargetPos;
     private SpriteRenderer spriteRenderer;
 
@@ -99,6 +103,16 @@ public class Bullet : MonoBehaviour
 
     private void ExplodeOrHit()
     {
+        if (impactPrefab != null)
+        {
+            Instantiate(impactPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (isCrit && critPrefab != null)
+        {
+            Instantiate(critPrefab, transform.position, Quaternion.identity);
+        }
+
         if (splashRadius > 0f)
         {
             // Sát thương nổ diện rộng AOE (Tháp Pháo)

@@ -19,7 +19,7 @@ MonoBehaviour:
   damage: 39
   cost: 60
   sprite: {fileID: -8735398849735464583, guid: c65f1b1389fedc842baf3ed8c3694231, type: 3}
-  bulletPrefab: {fileID: 1053547120077282029, guid: 84ab9760dde975346be4b7b5b0c339b5, type: 3}
+  bulletPrefab: {fileID: 5720645011817580300, guid: 886a623ad585ed546b5be941b8257e35, type: 3}
   splashRadius: 1
   critChance: 0.15
   critMultiplier: 1.5

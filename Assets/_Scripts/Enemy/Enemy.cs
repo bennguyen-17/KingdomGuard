@@ -9,6 +9,10 @@ public class Enemy : MonoBehaviour
     public int damageToCastle = 1;
     public bool isFlying = false;
 
+    [Header("Visual Effects Prefabs")]
+    [SerializeField] private GameObject deathEffectPrefab;
+    [SerializeField] private GameObject coinDropPrefab;
+
     private float currentHealth;
     private int targetIndex = 0;
     private Transform targetPoint;
@@ -161,6 +165,20 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (coinDropPrefab != null)
+        {
+            GameObject coinObj = Instantiate(coinDropPrefab, transform.position + Vector3.up * 0.2f, Quaternion.identity);
+            if (coinObj.TryGetComponent(out CoinDropVFX vfx))
+            {
+                vfx.Init(goldReward);
+            }
+        }
+
         NotifyRemoved(true);
         Destroy(gameObject);
     }

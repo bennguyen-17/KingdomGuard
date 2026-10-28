@@ -417,9 +417,9 @@ public class BuildManager : MonoBehaviour
         {
             Option o = options[pending];
             Vector3 c = cam.WorldToScreenPoint(openNode.Center);
-            string head = o.kind == Kind.Build ? o.title : (o.kind == Kind.Upgrade ? "Upgrade" : "Sell");
+            string head = o.kind == Kind.Build ? LocalizationManager.GetTowerDisplayName(o.title) : (o.kind == Kind.Upgrade ? LocalizationManager.Upgrade : LocalizationManager.Sell);
             DrawText(new Rect(c.x - 120f, topY - iconPx * 0.5f - fontSize - 10f, 240f, fontSize + 6f),
-                     head + " - click again", Color.yellow, TextAnchor.LowerCenter);
+                     head + " - " + LocalizationManager.ClickAgain, Color.yellow, TextAnchor.LowerCenter);
         }
     }
 

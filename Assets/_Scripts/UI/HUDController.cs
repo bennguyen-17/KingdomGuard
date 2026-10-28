@@ -53,37 +53,55 @@ public class HUDController : MonoBehaviour
 
             if (waveSpawner.IsPreparingWave1)
             {
-                if (waveTitleText != null) waveTitleText.text = $"WAVE 1 / {total}";
-                if (waveSubText != null) waveSubText.text = "Giai đoạn chuẩn bị";
-                if (waveActionButtonText != null) waveActionButtonText.text = "▶ BẮT ĐẦU WAVE 1 (Space)";
-                if (waveActionButtonFace != null) waveActionButtonFace.color = new Color32(46, 125, 50, 255); // Xanh lá
-                if (waveActionButton != null) waveActionButton.interactable = true;
-                if (tipText != null)
+                bool hasTower = FindObjectsByType<Tower>().Length > 0;
+                if (waveTitleText != null) waveTitleText.text = LocalizationManager.WaveTitle(1, total);
+                if (waveSubText != null) waveSubText.text = LocalizationManager.PrepPhase;
+
+                if (!hasTower)
                 {
-                    tipText.gameObject.SetActive(true);
-                    tipText.text = "💡 Hãy đặt tháp phòng thủ trước khi bấm Bắt đầu!";
+                    if (waveActionButtonText != null) waveActionButtonText.text = LocalizationManager.NeedTowerFirst;
+                    if (waveActionButtonFace != null) waveActionButtonFace.color = new Color32(90, 100, 110, 240); // Xám khóa nút
+                    if (waveActionButton != null) waveActionButton.interactable = false;
+                    if (tipText != null)
+                    {
+                        tipText.gameObject.SetActive(true);
+                        tipText.text = LocalizationManager.TipMustPlaceTower;
+                        tipText.color = new Color32(245, 215, 110, 255); // Màu vàng ấm nhắc nhở
+                    }
+                }
+                else
+                {
+                    if (waveActionButtonText != null) waveActionButtonText.text = LocalizationManager.StartWaveBtn(1);
+                    if (waveActionButtonFace != null) waveActionButtonFace.color = new Color32(46, 125, 50, 255); // Xanh lá sẵn sàng
+                    if (waveActionButton != null) waveActionButton.interactable = true;
+                    if (tipText != null)
+                    {
+                        tipText.gameObject.SetActive(true);
+                        tipText.text = LocalizationManager.TipPlaceTower;
+                        tipText.color = Color.white;
+                    }
                 }
             }
             else if (waveSpawner.IsWaitingForNextWave)
             {
                 int sec = Mathf.CeilToInt(waveSpawner.NextWaveTimer);
-                if (waveTitleText != null) waveTitleText.text = $"WAVE {cur} / {total}";
-                if (waveSubText != null) waveSubText.text = $"Nghỉ giữa wave: {sec}s";
-                if (waveActionButtonText != null) waveActionButtonText.text = $"▶ BẮT ĐẦU SỚM ({sec}s) (Space)";
+                if (waveTitleText != null) waveTitleText.text = LocalizationManager.WaveTitle(cur, total);
+                if (waveSubText != null) waveSubText.text = LocalizationManager.WaveBreak(sec);
+                if (waveActionButtonText != null) waveActionButtonText.text = LocalizationManager.EarlyStartBtn(sec);
                 if (waveActionButtonFace != null) waveActionButtonFace.color = new Color32(211, 84, 0, 255); // Cam
                 if (waveActionButton != null) waveActionButton.interactable = true;
                 if (tipText != null)
                 {
                     tipText.gameObject.SetActive(true);
-                    tipText.text = $"Bấm Space để bỏ qua {sec}s nghỉ và đánh tiếp!";
+                    tipText.text = LocalizationManager.TipSkipBreak(sec);
                 }
             }
             else
             {
                 int remaining = waveSpawner.AliveEnemiesCount;
-                if (waveTitleText != null) waveTitleText.text = $"WAVE {cur} / {total}";
-                if (waveSubText != null) waveSubText.text = $"Quái còn lại: {remaining}";
-                if (waveActionButtonText != null) waveActionButtonText.text = $"⚔ ĐANG CHIẾN ĐẤU ({remaining}) ⚔";
+                if (waveTitleText != null) waveTitleText.text = LocalizationManager.WaveTitle(cur, total);
+                if (waveSubText != null) waveSubText.text = LocalizationManager.EnemiesLeft(remaining);
+                if (waveActionButtonText != null) waveActionButtonText.text = LocalizationManager.BattleAction(remaining);
                 if (waveActionButtonFace != null) waveActionButtonFace.color = new Color32(44, 62, 80, 220); // Xám đậm
                 if (waveActionButton != null) waveActionButton.interactable = false;
                 if (tipText != null) tipText.gameObject.SetActive(false);

@@ -154,6 +154,13 @@ public class WaveSpawner : MonoBehaviour
     {
         if (isPreparingWave1)
         {
+            // Kiểm tra: Phải có ít nhất 1 tháp được đặt thì mới cho bắt đầu Wave 1
+            if (FindObjectsByType<Tower>().Length == 0)
+            {
+                Debug.Log("[WaveSpawner] Chưa đặt tháp nào! Vui lòng nhấp vào ô đất để đặt ít nhất 1 tháp trước khi bắt đầu.");
+                return;
+            }
+
             isPreparingWave1 = false;
             StartWave();
         }
