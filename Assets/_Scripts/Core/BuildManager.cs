@@ -19,6 +19,8 @@ public class BuildManager : MonoBehaviour
     [Tooltip("Khoảng cách từ tâm chỗ đặt tháp tới icon, tính theo số lần cỡ icon")]
     public float menuRadiusInIcons = 1.7f;
     [Range(0f, 1f)] public float sellRefund = 0.5f;
+    [Tooltip("Độ lệch trục Y khi sinh tháp so với tâm ô đất")]
+    public float towerOffsetY = 0.75f;
 
     private enum Kind { Build, Upgrade, Sell }
 
@@ -109,7 +111,8 @@ public class BuildManager : MonoBehaviour
             Vector3 sum = Vector3.zero;
             foreach (Vector3Int c in group) sum += baseTilemap.GetCellCenterWorld(c);
 
-            var node = new Node { Center = sum / group.Count };
+            Vector3 center = (sum / group.Count) + new Vector3(0f, towerOffsetY, 0f);
+            var node = new Node { Center = center };
             foreach (Vector3Int c in group) cellToNode[c] = node;
         }
     }
