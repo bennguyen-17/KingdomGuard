@@ -23,6 +23,10 @@ public class HUDController : MonoBehaviour
 
     private void Start()
     {
+        if (GetComponent<WorldTooltip>() == null)
+        gameObject.AddComponent<WorldTooltip>();
+        if (GetComponent<GameSpeedController>() == null)
+        gameObject.AddComponent<GameSpeedController>();
         if (waveActionButton != null)
         {
             waveActionButton.onClick.AddListener(OnActionButtonClicked);
