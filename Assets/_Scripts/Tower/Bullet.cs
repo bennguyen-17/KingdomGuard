@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         if (spriteRenderer != null)
         {
             // Đảm bảo đạn luôn hiển thị nổi lên trên toàn bộ Tilemap (order 0-3) và quái/tháp (order 10)
-            spriteRenderer.sortingOrder = 5;
+            spriteRenderer.sortingOrder = 15;
         }
 
         // Tăng cỡ đạn một chút để người chơi dễ quan sát đường bay

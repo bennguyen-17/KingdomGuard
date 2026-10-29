@@ -26,12 +26,10 @@ public class WaveSpawner : MonoBehaviour
     }
 
     [Header("Prefabs cho từng loại quái")]
-    [Tooltip("Prefab riêng cho Goblin (nếu để trống sẽ dùng Enemy Prefab)")]
+    [Tooltip("Prefab cho Goblin")]
     public GameObject goblinPrefab;
-    [Tooltip("Prefab riêng cho Orc (nếu để trống sẽ dùng Enemy Prefab)")]
+    [Tooltip("Prefab cho Orc")]
     public GameObject orcPrefab;
-    [Tooltip("Prefab quái mặc định / dự phòng")]
-    public GameObject enemyPrefab;
 
     [Header("Wave Configuration (GDD)")]
     [Tooltip("Tổng số wave cho bản MVP (Mặc định: 6 wave)")]
@@ -234,13 +232,13 @@ public class WaveSpawner : MonoBehaviour
         Waypoints chosenPath = paths[Random.Range(0, paths.Length)];
         if (chosenPath == null || chosenPath.PointCount == 0) return;
 
-        GameObject prefabToSpawn = enemyPrefab;
-        if (next.enemyName == "Goblin" && goblinPrefab != null) prefabToSpawn = goblinPrefab;
-        else if (next.enemyName == "Orc" && orcPrefab != null) prefabToSpawn = orcPrefab;
+        GameObject prefabToSpawn = null;
+        if (next.enemyName == "Goblin") prefabToSpawn = goblinPrefab;
+        else if (next.enemyName == "Orc") prefabToSpawn = orcPrefab;
 
         if (prefabToSpawn == null)
         {
-            Debug.LogError("WaveSpawner: Chưa gán Enemy Prefab trong Inspector!");
+            Debug.LogError($"WaveSpawner: Chưa gán Prefab cho quái {next.enemyName} trong Inspector!");
             return;
         }
 

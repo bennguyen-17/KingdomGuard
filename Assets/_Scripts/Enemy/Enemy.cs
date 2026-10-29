@@ -83,18 +83,7 @@ public class Enemy : MonoBehaviour
             animator.Play(animName);
         }
 
-        // Tự động phân biệt ngoại hình rõ ràng nếu dùng chung Prefab
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        if (enemyName == "Orc")
-        {
-            transform.localScale = Vector3.one * 0.75f; // Orc to con hơn hẳn Goblin (trâu máu 150)
-            if (spriteRenderer != null) spriteRenderer.color = new Color(0.95f, 0.45f, 0.45f, 1f); // Nhuộm đỏ cam
-        }
-        else
-        {
-            transform.localScale = Vector3.one * 0.5f; // Goblin nhỏ con, nhanh nhẹn (máu 50)
-            if (spriteRenderer != null) spriteRenderer.color = Color.white;
-        }
+
     }
 
     private void Start()

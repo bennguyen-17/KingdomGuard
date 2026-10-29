@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 15
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3159797154925999533, guid: 4687adbdc9f4afd4e8e1bb23b585f41c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1053547120077282029}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db9d8c92a6c8e844a9fe0f6e5e8964d5, type: 3}
+  m_Script: {fileID: 11500000, guid: ad6ddebbd1764b74791ec0e9a5557373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   speed: 8
