@@ -65,26 +65,32 @@ public static class LocalizationManager
           "• Khởi đầu: <b>200 Vàng</b> & <b>20 Máu thành</b> (quái lọt vào sẽ trừ máu thành).\n\n" +
           "<b>2. HỆ THỐNG THÁP PHÒNG THỦ</b>\n" +
           "• <b>Tháp Cung (50G):</b> Tốc độ bắn cực nhanh (0.5s), tầm xa (3.5), ưu tiên quái đi đầu.\n" +
-          "• <b>Tháp Pháo (100G):</b> Sát thương diện rộng (AOE), nổ lan nhiều quái, 15% bạo kích x1.5 damage.\n\n" +
-          "<b>3. QUÁI VẬT XÂM LƯỢC</b>\n" +
-          "• <b>Goblin:</b> Di chuyển nhanh, 50 Máu, hạ gục nhận <b>5 Vàng</b> (lọt thành trừ 1 Máu).\n" +
-          "• <b>Orc:</b> Trâu bò, 150 Máu, hạ gục nhận <b>10 Vàng</b> (xuất hiện từ Đợt 4, lọt thành trừ 2 Máu).\n\n" +
+          "• <b>Tháp Pháo (100G):</b> Sát thương diện rộng (AOE), nổ lan nhiều quái, bạo kích x1.5 damage.\n" +
+          "• <b>Tháp Phép (125G):</b> Phóng cầu năng lượng ma thuật tầm xa cực mạnh.\n\n" +
+          "<b>3. QUÁI VẬT XÂM LƯỢC (CÁC MÔN HỌC)</b>\n" +
+          "• <b>Toán Rời Rạc (Goblin):</b> Chạy nhanh, 50 Máu, hạ gục nhận <b>5 Vàng</b>.\n" +
+          "• <b>Cấu Trúc Dữ Liệu (Orc):</b> Trâu bò, 150 Máu, hạ gục nhận <b>10 Vàng</b> (từ Đợt 4).\n" +
+          "• <b>ĐỒ ÁN TỐT NGHIỆP (Trùm Troll):</b> 500 Máu, siêu trâu, xuất hiện ở đợt cuối cùng!\n\n" +
           "<b>4. ĐIỀU KHIỂN & PHÍM TẮT</b>\n" +
-          "• <b>Chuột trái:</b> Nhấp ô đất trống để Xây tháp. Nhấp vào tháp đã xây để <b>Nâng cấp</b> hoặc <b>Bán</b>.\n" +
+          "• <b>Phím 1, 2, 3:</b> Tăng tốc độ trận đấu (1x / 2x / 3x).\n" +
+          "• <b>Chuột trái:</b> Nhấp ô đất để Xây tháp. Nhấp vào tháp để <b>Nâng cấp</b> hoặc <b>Bán</b>.\n" +
           "• <b>Phím Space:</b> Bắt đầu đợt mới hoặc Bỏ qua thời gian đếm ngược giữa các wave.\n" +
           "• <b>Phím Esc / P:</b> Tạm dừng trận đấu."
         : "<b>1. CORE OBJECTIVE</b>\n" +
           "• Protect the Castle through <b>6 invading monster waves</b>.\n" +
-          "• Starting resources: <b>200 Gold</b> & <b>20 Castle HP</b> (leaked monsters deplete HP).\n\n" +
+          "• Starting resources: <b>200 Gold</b> & <b>20 Castle HP</b>.\n\n" +
           "<b>2. DEFENSE TOWERS</b>\n" +
-          "• <b>Archer Tower (50G):</b> High attack rate (0.5s), long range (3.5), targets first enemy.\n" +
-          "• <b>Cannon Tower (100G):</b> Area-of-effect (AOE) splash damage, 15% crit chance (x1.5 damage).\n\n" +
-          "<b>3. INVADING MONSTERS</b>\n" +
-          "• <b>Goblin:</b> Fast movement, 50 HP, drops <b>5 Gold</b> (breaches castle for -1 HP).\n" +
-          "• <b>Orc:</b> High durability, 150 HP, drops <b>10 Gold</b> (appears from Wave 4, breaches castle for -2 HP).\n\n" +
+          "• <b>Archer (50G):</b> High attack rate (0.5s), long range (3.5).\n" +
+          "• <b>Cannon (100G):</b> Area-of-effect (AOE) splash damage, crit chance.\n" +
+          "• <b>Magic (125G):</b> Heavy arcane magic projectile.\n\n" +
+          "<b>3. INVADING MONSTERS (SUBJECTS)</b>\n" +
+          "• <b>Discrete Math (Goblin):</b> Fast movement, 50 HP, drops 5 Gold.\n" +
+          "• <b>Data Structures (Orc):</b> High durability, 150 HP, drops 10 Gold.\n" +
+          "• <b>CAPSTONE PROJECT (Troll Boss):</b> 500 HP, spawns on final wave!\n\n" +
           "<b>4. CONTROLS & SHORTCUTS</b>\n" +
-          "• <b>Left Click:</b> Click empty build tile to build. Click existing tower to <b>Upgrade</b> or <b>Sell</b>.\n" +
-          "• <b>Space Key:</b> Start wave immediately or skip break countdown.\n" +
+          "• <b>1, 2, 3 Keys:</b> Game speed (1x / 2x / 3x).\n" +
+          "• <b>Left Click:</b> Click empty build tile to build / upgrade / sell.\n" +
+          "• <b>Space Key:</b> Start wave immediately or skip countdown.\n" +
           "• <b>Esc / P Key:</b> Pause the battle.";
 
     // HUD & In-game
@@ -125,7 +131,9 @@ public static class LocalizationManager
     public static string Sell => IsVietnamese ? "Bán tháp" : "Sell";
     public static string ClickAgain => IsVietnamese ? "nhấp lại để xác nhận" : "click again to confirm";
 
-        // ===== TÊN HIỂN THỊ CỦA THÁP & QUÁI: muốn đổi tên thì sửa chữ trong dấu "" ở đây =====
+    // ===== TÊN HIỂN THỊ CỦA THÁP & QUÁI =====
+    // Tháp: Tên chuẩn gốc (Tháp Cung, Tháp Pháo, Tháp Phép)
+    // Quái: Tên các môn học FPTU vui nhộn theo gợi ý của thầy (Toán Rời Rạc, Cấu Trúc Dữ Liệu, Đồ Án Tốt Nghiệp)
     public static string GetTowerDisplayName(string rawName)
     {
         if (string.IsNullOrEmpty(rawName)) return "";
@@ -142,9 +150,11 @@ public static class LocalizationManager
     {
         if (string.IsNullOrEmpty(rawName)) return "";
         if (rawName.IndexOf("Goblin", StringComparison.OrdinalIgnoreCase) >= 0)
-            return IsVietnamese ? "Yêu Tinh" : "Goblin";
+            return IsVietnamese ? "Toán Rời Rạc" : "Discrete Math";
         if (rawName.IndexOf("Orc", StringComparison.OrdinalIgnoreCase) >= 0)
-            return IsVietnamese ? "Thú Nhân" : "Orc";
+            return IsVietnamese ? "Cấu Trúc Dữ Liệu" : "Data Structures";
+        if (rawName.IndexOf("Boss", StringComparison.OrdinalIgnoreCase) >= 0 || rawName.IndexOf("Troll", StringComparison.OrdinalIgnoreCase) >= 0)
+            return IsVietnamese ? "ĐỒ ÁN TỐT NGHIỆP" : "CAPSTONE PROJECT";
         return rawName;
     }
 }

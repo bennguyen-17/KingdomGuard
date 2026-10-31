@@ -8,9 +8,9 @@ public class UIManager : MonoBehaviour
 {
     public struct ResultData
     {
-        public int wavesCompleted;
         public int currentWave;
         public int totalWaves;
+        public int wavesCompleted;
         public int enemiesDefeated;
         public int baseHealthPercent;
         public int goldEarned;
@@ -131,11 +131,13 @@ public class UIManager : MonoBehaviour
         if (darkOverlay != null) darkOverlay.gameObject.SetActive(false);
         if (transitionCurtain != null) transitionCurtain.gameObject.SetActive(false);
 
+        ApplyResultScreenStyling();
         UpdateLocalizedUI();
     }
 
     private void Start()
     {
+        ApplyResultScreenStyling();
         UpdateLocalizedUI();
     }
 
@@ -162,25 +164,234 @@ public class UIManager : MonoBehaviour
         if (loseTitleText != null) loseTitleText.text = LocalizationManager.LoseTitle;
         if (loseSubtitleText != null) loseSubtitleText.text = LocalizationManager.LoseSubtitle;
 
-        if (winNextButtonText != null) winNextButtonText.text = LocalizationManager.NextLevel;
-        if (winReplayButtonText != null) winReplayButtonText.text = LocalizationManager.ReplayBtn;
-        if (winMenuButtonText != null) winMenuButtonText.text = LocalizationManager.MenuBtn;
-        if (loseReplayButtonText != null) loseReplayButtonText.text = LocalizationManager.ReplayBtn;
-        if (loseMenuButtonText != null) loseMenuButtonText.text = LocalizationManager.MenuBtn;
+        if (winNextButtonText != null) winNextButtonText.text = "▶  " + LocalizationManager.NextLevel;
+        if (winReplayButtonText != null) winReplayButtonText.text = "↻  " + LocalizationManager.ReplayBtn;
+        if (winMenuButtonText != null) winMenuButtonText.text = "◆  " + LocalizationManager.MenuBtn;
+        if (loseReplayButtonText != null) loseReplayButtonText.text = "↻  " + LocalizationManager.ReplayBtn;
+        if (loseMenuButtonText != null) loseMenuButtonText.text = "◆  " + LocalizationManager.MenuBtn;
 
         if (winRowLabels != null)
         {
-            string[] winKeys = new[] { LocalizationManager.WavesCompleted, LocalizationManager.EnemiesDefeated, LocalizationManager.BaseHp, LocalizationManager.GoldEarned, LocalizationManager.Score };
+            string[] winKeys = new[]
+            {
+                "★  " + LocalizationManager.WavesCompleted,
+                "⚔  " + LocalizationManager.EnemiesDefeated,
+                "♥  " + LocalizationManager.BaseHp,
+                "◆  " + LocalizationManager.GoldEarned,
+                "★  " + LocalizationManager.Score
+            };
             for (int i = 0; i < winRowLabels.Length && i < winKeys.Length; i++)
                 if (winRowLabels[i] != null) winRowLabels[i].text = winKeys[i];
         }
 
         if (loseRowLabels != null)
         {
-            string[] loseKeys = new[] { LocalizationManager.WaveReached, LocalizationManager.EnemiesDefeated, LocalizationManager.BaseHp, LocalizationManager.Score };
+            string[] loseKeys = new[]
+            {
+                "★  " + LocalizationManager.WaveReached,
+                "⚔  " + LocalizationManager.EnemiesDefeated,
+                "♥  " + LocalizationManager.BaseHp,
+                "★  " + LocalizationManager.Score
+            };
             for (int i = 0; i < loseRowLabels.Length && i < loseKeys.Length; i++)
                 if (loseRowLabels[i] != null) loseRowLabels[i].text = loseKeys[i];
         }
+    }
+
+    private void ApplyResultScreenStyling()
+    {
+        // 1. Style WinPanel
+        if (winPanel != null)
+        {
+            Transform body = winPanel.transform.Find("Body");
+            if (body != null)
+            {
+                var img = body.GetComponent<Image>();
+                if (img != null) img.color = new Color(0.08f, 0.11f, 0.16f, 0.96f);
+                EnsureOutline(body.gameObject, new Color(0.85f, 0.65f, 0.13f, 0.95f), new Vector2(3f, -3f));
+            }
+
+            Transform border = winPanel.transform.Find("Border");
+            if (border != null)
+            {
+                var img = border.GetComponent<Image>();
+                if (img != null) img.color = new Color(0.95f, 0.78f, 0.25f, 0.35f);
+            }
+
+            Transform banner = winPanel.transform.Find("Banner");
+            if (banner != null)
+            {
+                var img = banner.GetComponent<Image>();
+                if (img != null)
+                {
+                    img.color = Color.white;
+                    if (img.sprite == null)
+                        img.sprite = Resources.Load<Sprite>("UI/Ribbon_Gold");
+                }
+            }
+
+            if (winTitleText != null)
+            {
+                winTitleText.fontSize = 40;
+                winTitleText.fontStyle = FontStyle.Bold;
+                winTitleText.color = new Color(1f, 0.95f, 0.70f);
+                EnsureOutline(winTitleText.gameObject, new Color(0.28f, 0.16f, 0.02f, 1f), new Vector2(2f, -2f));
+                EnsureShadow(winTitleText.gameObject, new Color(0f, 0f, 0f, 0.9f), new Vector2(3f, -3f));
+            }
+
+            if (winSubtitleText != null)
+            {
+                winSubtitleText.fontSize = 17;
+                winSubtitleText.fontStyle = FontStyle.Bold;
+                winSubtitleText.color = new Color(0.98f, 0.98f, 0.94f);
+                EnsureShadow(winSubtitleText.gameObject, new Color(0f, 0f, 0f, 0.8f), new Vector2(1.5f, -1.5f));
+            }
+
+            StyleButton(winNextButton, new Color(0.16f, 0.65f, 0.35f), new Color(0.22f, 0.80f, 0.42f), new Color(0.10f, 0.45f, 0.22f), new Color(0.08f, 0.35f, 0.18f));
+            StyleButton(winReplayButton, new Color(0.80f, 0.32f, 0.20f), new Color(0.95f, 0.42f, 0.28f), new Color(0.60f, 0.22f, 0.12f), new Color(0.45f, 0.15f, 0.08f));
+            StyleButton(winMenuButton, new Color(0.22f, 0.30f, 0.40f), new Color(0.32f, 0.44f, 0.58f), new Color(0.15f, 0.20f, 0.28f), new Color(0.12f, 0.16f, 0.24f));
+        }
+
+        // 2. Style LosePanel
+        if (losePanel != null)
+        {
+            Transform body = losePanel.transform.Find("Body");
+            if (body != null)
+            {
+                var img = body.GetComponent<Image>();
+                if (img != null) img.color = new Color(0.10f, 0.08f, 0.10f, 0.96f);
+                EnsureOutline(body.gameObject, new Color(0.75f, 0.15f, 0.15f, 0.95f), new Vector2(3f, -3f));
+            }
+
+            Transform border = losePanel.transform.Find("Border");
+            if (border != null)
+            {
+                var img = border.GetComponent<Image>();
+                if (img != null) img.color = new Color(0.85f, 0.25f, 0.25f, 0.35f);
+            }
+
+            Transform banner = losePanel.transform.Find("Banner");
+            if (banner != null)
+            {
+                var img = banner.GetComponent<Image>();
+                if (img != null)
+                {
+                    img.color = Color.white;
+                    if (img.sprite == null)
+                        img.sprite = Resources.Load<Sprite>("UI/Ribbon_Red");
+                }
+            }
+
+            if (loseTitleText != null)
+            {
+                loseTitleText.fontSize = 40;
+                loseTitleText.fontStyle = FontStyle.Bold;
+                loseTitleText.color = Color.white;
+                EnsureOutline(loseTitleText.gameObject, new Color(0.35f, 0.05f, 0.05f, 1f), new Vector2(2f, -2f));
+                EnsureShadow(loseTitleText.gameObject, new Color(0f, 0f, 0f, 0.9f), new Vector2(3f, -3f));
+            }
+
+            if (loseSubtitleText != null)
+            {
+                loseSubtitleText.fontSize = 17;
+                loseSubtitleText.fontStyle = FontStyle.Bold;
+                loseSubtitleText.color = new Color(0.95f, 0.85f, 0.85f);
+                EnsureShadow(loseSubtitleText.gameObject, new Color(0f, 0f, 0f, 0.8f), new Vector2(1.5f, -1.5f));
+            }
+
+            StyleButton(loseReplayButton, new Color(0.80f, 0.32f, 0.20f), new Color(0.95f, 0.42f, 0.28f), new Color(0.60f, 0.22f, 0.12f), new Color(0.45f, 0.15f, 0.08f));
+            StyleButton(loseMenuButton, new Color(0.22f, 0.30f, 0.40f), new Color(0.32f, 0.44f, 0.58f), new Color(0.15f, 0.20f, 0.28f), new Color(0.12f, 0.16f, 0.24f));
+        }
+
+        // 3. Style StatsCard Rows
+        StyleStatsCard(winPanel);
+        StyleStatsCard(losePanel);
+    }
+
+    private void StyleStatsCard(GameObject panel)
+    {
+        if (panel == null) return;
+        Transform card = panel.transform.Find("StatsCard");
+        if (card == null) return;
+
+        for (int i = 0; i < card.childCount; i++)
+        {
+            Transform row = card.GetChild(i);
+            var img = row.GetComponent<Image>();
+            if (img != null) img.color = new Color(0.12f, 0.16f, 0.22f, 0.82f);
+            EnsureOutline(row.gameObject, new Color(0.25f, 0.32f, 0.44f, 0.5f), new Vector2(1f, -1f));
+
+            Transform label = row.Find("Label");
+            if (label != null)
+            {
+                var txt = label.GetComponent<Text>();
+                if (txt != null)
+                {
+                    txt.fontSize = 18;
+                    txt.fontStyle = FontStyle.Bold;
+                    txt.color = new Color(0.88f, 0.91f, 0.95f);
+                    EnsureShadow(label.gameObject, new Color(0f, 0f, 0f, 0.6f), new Vector2(1f, -1f));
+                }
+            }
+
+            Transform val = row.Find("Value");
+            if (val != null)
+            {
+                var txt = val.GetComponent<Text>();
+                if (txt != null)
+                {
+                    txt.fontSize = 22;
+                    txt.fontStyle = FontStyle.Bold;
+                    EnsureShadow(val.gameObject, new Color(0f, 0f, 0f, 0.8f), new Vector2(1.5f, -1.5f));
+                }
+            }
+        }
+    }
+
+    private void StyleButton(Button btn, Color normal, Color hover, Color pressed, Color outlineCol)
+    {
+        if (btn == null) return;
+        var img = btn.GetComponent<Image>();
+        if (img != null) img.color = normal;
+
+        var colors = btn.colors;
+        colors.normalColor = normal;
+        colors.highlightedColor = hover;
+        colors.pressedColor = pressed;
+        colors.selectedColor = normal;
+        btn.colors = colors;
+
+        EnsureOutline(btn.gameObject, outlineCol, new Vector2(2f, -2f));
+        EnsureShadow(btn.gameObject, new Color(0f, 0f, 0f, 0.55f), new Vector2(0f, -3f));
+
+        var txt = btn.GetComponentInChildren<Text>();
+        if (txt != null)
+        {
+            txt.fontSize = 20;
+            txt.fontStyle = FontStyle.Bold;
+            txt.color = Color.white;
+            EnsureShadow(txt.gameObject, new Color(0f, 0f, 0f, 0.75f), new Vector2(1.5f, -1.5f));
+        }
+    }
+
+    private static void EnsureOutline(GameObject go, Color color, Vector2 dist)
+    {
+        if (go == null) return;
+        var ol = go.GetComponent<Outline>();
+        if (ol == null) ol = go.AddComponent<Outline>();
+        ol.effectColor = color;
+        ol.effectDistance = dist;
+        ol.enabled = true;
+    }
+
+    private static void EnsureShadow(GameObject go, Color color, Vector2 dist)
+    {
+        if (go == null) return;
+        var sh = go.GetComponent<Shadow>();
+        if (sh == null) sh = go.AddComponent<Shadow>();
+        sh.effectColor = color;
+        sh.effectDistance = dist;
+        sh.enabled = true;
     }
 
     private void Update()
@@ -245,11 +456,11 @@ public class UIManager : MonoBehaviour
         if (isPaused) ResumeGame();
         if (hudRoot != null) hudRoot.SetActive(false);
 
-        if (winWavesText != null) winWavesText.text = $"{data.wavesCompleted} / {data.totalWaves}";
-        if (winEnemiesText != null) winEnemiesText.text = data.enemiesDefeated.ToString();
-        if (winHealthText != null) winHealthText.text = $"{data.baseHealthPercent}%";
-        if (winGoldText != null) winGoldText.text = data.goldEarned.ToString();
-        if (winScoreText != null) winScoreText.text = data.score.ToString("N0");
+        if (winWavesText != null) { winWavesText.text = $"{data.wavesCompleted} / {data.totalWaves}"; winWavesText.color = new Color(0.35f, 0.78f, 1f); }
+        if (winEnemiesText != null) { winEnemiesText.text = data.enemiesDefeated.ToString(); winEnemiesText.color = new Color(1f, 0.45f, 0.25f); }
+        if (winHealthText != null) { winHealthText.text = $"{data.baseHealthPercent}%"; winHealthText.color = new Color(0.25f, 0.88f, 0.45f); }
+        if (winGoldText != null) { winGoldText.text = data.goldEarned.ToString(); winGoldText.color = new Color(1f, 0.75f, 0.15f); }
+        if (winScoreText != null) { winScoreText.text = data.score.ToString("N0"); winScoreText.color = new Color(1f, 0.84f, 0f); }
 
         if (winPanel != null)
         {
@@ -267,10 +478,10 @@ public class UIManager : MonoBehaviour
         if (isPaused) ResumeGame();
         if (hudRoot != null) hudRoot.SetActive(false);
 
-        if (loseWavesText != null) loseWavesText.text = $"{data.currentWave} / {data.totalWaves}";
-        if (loseEnemiesText != null) loseEnemiesText.text = data.enemiesDefeated.ToString();
-        if (loseHealthText != null) loseHealthText.text = $"{data.baseHealthPercent}%";
-        if (loseScoreText != null) loseScoreText.text = data.score.ToString("N0");
+        if (loseWavesText != null) { loseWavesText.text = $"{data.currentWave} / {data.totalWaves}"; loseWavesText.color = new Color(0.35f, 0.78f, 1f); }
+        if (loseEnemiesText != null) { loseEnemiesText.text = data.enemiesDefeated.ToString(); loseEnemiesText.color = new Color(1f, 0.45f, 0.25f); }
+        if (loseHealthText != null) { loseHealthText.text = $"{data.baseHealthPercent}%"; loseHealthText.color = new Color(0.95f, 0.35f, 0.35f); }
+        if (loseScoreText != null) { loseScoreText.text = data.score.ToString("N0"); loseScoreText.color = new Color(1f, 0.84f, 0f); }
 
         if (losePanel != null)
         {
@@ -299,7 +510,7 @@ public class UIManager : MonoBehaviour
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / 0.25f));
-            if (darkOverlay != null) darkOverlay.color = new Color(0f, 0f, 0f, Mathf.Lerp(0f, 0.65f, t));
+            if (darkOverlay != null) darkOverlay.color = new Color(0f, 0f, 0f, Mathf.Lerp(0f, 0.75f, t));
             group.alpha = t;
             panel.transform.localScale = Vector3.LerpUnclamped(Vector3.one * 0.85f, Vector3.one, t);
             yield return null;
@@ -312,11 +523,11 @@ public class UIManager : MonoBehaviour
 
     public void TransitionTo(System.Action action)
     {
-        if (curtainRoutine != null) StopCoroutine(curtainRoutine);
-        curtainRoutine = StartCoroutine(FadeCurtain(action));
+        if (curtainRoutine != null) return;
+        curtainRoutine = StartCoroutine(CurtainRoutine(action));
     }
 
-    private IEnumerator FadeCurtain(System.Action action)
+    private IEnumerator CurtainRoutine(System.Action action)
     {
         if (transitionCurtain == null)
         {

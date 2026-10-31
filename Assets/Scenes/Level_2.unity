@@ -609,6 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveSpawner
   goblinPrefab: {fileID: 3224047085075591598, guid: 8e2bfd9d446a3e8428f2031ded4f0f74, type: 3}
   orcPrefab: {fileID: 1312789282960237553, guid: 3abbf5ad0bf1b4342a6d9f086dffe915, type: 3}
+  bossPrefab: {fileID: 4675843318518243506, guid: e7b40a44392c4aed855738668387552b, type: 3}
   enemyPrefab: {fileID: 3224047085075591598, guid: 8e2bfd9d446a3e8428f2031ded4f0f74, type: 3}
   totalWaves: 10
   timeBetweenWaves: 3

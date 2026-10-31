@@ -11,6 +11,8 @@ public class WaveSpawner : MonoBehaviour
         public int goblinCount = 6;
         [Tooltip("Số lượng Orc (quái trâu máu)")]
         public int orcCount = 0;
+        [Tooltip("Số lượng Boss (trùm cuối)")]
+        public int bossCount = 0;
         [Tooltip("Khoảng cách giữa các lần sinh quái (giây)")]
         public float spawnInterval = 1.5f;
     }
@@ -30,6 +32,8 @@ public class WaveSpawner : MonoBehaviour
     public GameObject goblinPrefab;
     [Tooltip("Prefab cho Orc")]
     public GameObject orcPrefab;
+    [Tooltip("Prefab cho Boss (Trùm cuối)")]
+    public GameObject bossPrefab;
 
     [Header("Wave Configuration (GDD)")]
     [Tooltip("Tổng số wave cho bản MVP (Mặc định: 6 wave)")]
@@ -79,6 +83,9 @@ public class WaveSpawner : MonoBehaviour
         {
             paths = FindObjectsByType<Waypoints>();
         }
+
+        if (bossPrefab == null)
+            bossPrefab = Resources.Load<GameObject>("Boss");
 
         totalWaves = Mathf.Max(1, totalWaves);
         if (GameManager.Instance != null)
@@ -179,8 +186,20 @@ public class WaveSpawner : MonoBehaviour
 
         int gCount = config.goblinCount;
         int oCount = config.orcCount;
+        int bCount = config.bossCount;
 
-        while (gCount > 0 || oCount > 0)
+        // Tự động phân bổ số lượng Boss theo yêu cầu từng Level ở Wave cuối cùng:
+        // Level 1: 1 Boss | Level 2: 3 Boss | Level 3: 5 Boss
+        if (waveIndex == totalWaves && bCount == 0)
+        {
+            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            if (sceneName.Contains("1")) bCount = 1;
+            else if (sceneName.Contains("2")) bCount = 3;
+            else if (sceneName.Contains("3")) bCount = 5;
+            else bCount = 1;
+        }
+
+        while (gCount > 0 || oCount > 0 || bCount > 0)
         {
             if (gCount > 0)
             {
@@ -209,6 +228,20 @@ public class WaveSpawner : MonoBehaviour
                 });
                 oCount--;
             }
+
+            if (bCount > 0)
+            {
+                enemyQueue.Enqueue(new QueuedEnemy
+                {
+                    enemyName = "Boss",
+                    baseHp = 500f,
+                    speed = 0.85f,
+                    gold = 50,
+                    castleDmg = 5,
+                    animName = "TrollBoss"
+                });
+                bCount--;
+            }
         }
     }
 
@@ -235,6 +268,7 @@ public class WaveSpawner : MonoBehaviour
         GameObject prefabToSpawn = null;
         if (next.enemyName == "Goblin") prefabToSpawn = goblinPrefab;
         else if (next.enemyName == "Orc") prefabToSpawn = orcPrefab;
+        else if (next.enemyName == "Boss") prefabToSpawn = bossPrefab != null ? bossPrefab : (orcPrefab != null ? orcPrefab : goblinPrefab);
 
         if (prefabToSpawn == null)
         {
