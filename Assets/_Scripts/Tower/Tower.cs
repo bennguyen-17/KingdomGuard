@@ -14,20 +14,11 @@ public class Tower : MonoBehaviour
     /// Tầm bắn thực tế: Đảm bảo tháp luôn với tới được đường đi trên Scene Level hiện tại.
     /// Do Scene vẽ ô đất cách waypoint từ 3.0 đến 4.0 unit, nên Cannon cần tối thiểu 3.8 và Archer 4.5.
     /// </summary>
-    public float Range
-    {
-        get
-        {
-            if (Definition == null) return 0f;
-            bool isCannonType = Stats.isCannon || (Definition != null && Definition.towerName.ToLower().Contains("cannon"));
-            float minRange = isCannonType ? 3.8f : 4.5f;
-            return Mathf.Max(Stats.range, minRange);
-        }
-    }
+    public float Range => (Definition != null) ? Stats.range : 0f;
 
     public bool CanUpgrade => Definition != null && Level + 1 < Definition.levels.Length;
     public int UpgradeCost => CanUpgrade ? Definition.levels[Level + 1].cost : 0;
-    public float NextRange => CanUpgrade ? Mathf.Max(Definition.levels[Level + 1].range, Range + 0.3f) : Range;
+    public float NextRange => CanUpgrade ? Definition.levels[Level + 1].range : Range;
 
     private Transform target;
     private float fireCountdown;
