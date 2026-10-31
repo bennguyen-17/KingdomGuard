@@ -28,8 +28,9 @@ public class GameManager : MonoBehaviour
         GameIsOver = false;
         Time.timeScale = 1f;
         resultUI = GetComponent<UIManager>();
-        if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();
-    }
+        if (resultUI == null) resultUI = FindAnyObjectByType<UIManager>(FindObjectsInactive.Include);
+        if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();   
+        }
 
     private void Start()
     {

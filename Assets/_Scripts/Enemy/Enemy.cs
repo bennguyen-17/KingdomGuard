@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject coinDropPrefab;
 
     private float currentHealth;
+    public string EnemyKey { get; private set; } = "Goblin";
+    public float CurrentHealth => currentHealth;
     private int targetIndex = 0;
     private Transform targetPoint;
     private WaveSpawner waveSpawner;
@@ -27,6 +29,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentHealth = maxHealth;
+        if (GetComponent<EnemyHealthBar>() == null) gameObject.AddComponent<EnemyHealthBar>();
     }
 
     public void Initialize(WaveSpawner spawner, Waypoints assignedPath)
@@ -47,6 +50,7 @@ public class Enemy : MonoBehaviour
     public void Configure(EnemyData data, float hpMultiplier = 1f)
     {
         if (data == null) return;
+        EnemyKey = data.enemyName;
         maxHealth = data.baseHealth * hpMultiplier;
         currentHealth = maxHealth;
         speed = data.speed;
@@ -70,6 +74,7 @@ public class Enemy : MonoBehaviour
 
     public void ConfigureDirect(string enemyName, float baseHp, float spd, int reward, int castleDmg, float hpMultiplier = 1f, string animName = "Goblin_Walk", bool flying = false)
     {
+        EnemyKey = enemyName;
         maxHealth = baseHp * hpMultiplier;
         currentHealth = maxHealth;
         speed = spd;

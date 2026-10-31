@@ -125,6 +125,7 @@ public static class LocalizationManager
     public static string Sell => IsVietnamese ? "Bán tháp" : "Sell";
     public static string ClickAgain => IsVietnamese ? "nhấp lại để xác nhận" : "click again to confirm";
 
+        // ===== TÊN HIỂN THỊ CỦA THÁP & QUÁI: muốn đổi tên thì sửa chữ trong dấu "" ở đây =====
     public static string GetTowerDisplayName(string rawName)
     {
         if (string.IsNullOrEmpty(rawName)) return "";
@@ -132,6 +133,18 @@ public static class LocalizationManager
             return IsVietnamese ? "Tháp Cung" : "Archer";
         if (rawName.IndexOf("Cannon", StringComparison.OrdinalIgnoreCase) >= 0)
             return IsVietnamese ? "Tháp Pháo" : "Cannon";
+        if (rawName.IndexOf("Magic", StringComparison.OrdinalIgnoreCase) >= 0)
+            return IsVietnamese ? "Tháp Phép" : "Magic";
+        return rawName;
+    }
+
+    public static string GetEnemyDisplayName(string rawName)
+    {
+        if (string.IsNullOrEmpty(rawName)) return "";
+        if (rawName.IndexOf("Goblin", StringComparison.OrdinalIgnoreCase) >= 0)
+            return IsVietnamese ? "Yêu Tinh" : "Goblin";
+        if (rawName.IndexOf("Orc", StringComparison.OrdinalIgnoreCase) >= 0)
+            return IsVietnamese ? "Thú Nhân" : "Orc";
         return rawName;
     }
 }
