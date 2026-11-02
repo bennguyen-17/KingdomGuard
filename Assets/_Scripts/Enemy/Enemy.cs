@@ -113,6 +113,7 @@ public class Enemy : MonoBehaviour
             {
                 // Quái đã vào tới Lâu đài -> Trừ máu theo GDD (Goblin: 1, Orc: 2)
                 GameManager.Lives = Mathf.Max(0, GameManager.Lives - damageToCastle);
+                AudioManager.Instance?.PlayBaseDamage();
                 NotifyRemoved(false);
                 Destroy(gameObject);
                 return;
@@ -159,6 +160,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        AudioManager.Instance?.PlayEnemyDeath();
         if (deathEffectPrefab != null)
         {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);

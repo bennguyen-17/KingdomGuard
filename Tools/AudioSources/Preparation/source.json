@@ -1,0 +1,19 @@
+{
+  "title": "Tender Strength (user-provided wip WAV; title inferred from filename)",
+  "author": "Not supplied",
+  "license": "Specific license not supplied; not identified as CC0",
+  "source_page": "User states the download came from an official site; URL not supplied",
+  "verified_date": "2026-11-02",
+  "original_path": "Tools/AudioSources/Preparation/TenderStrength_user.wav",
+  "original_sha256": "a6797f4175e937d34ff33e664a3a5275c91f629ee7bfdb6dd22456d548920aa6",
+  "original_seconds": 83.56571428571428,
+  "original_rate": 44100,
+  "original_channels": 2,
+  "runtime_path": "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
+  "runtime_sha256": "8b34623019254da4112c3b921aa96b320046057d2d7dfd50e1bc0af916e942e5",
+  "runtime_seconds": 79.76648526077098,
+  "processing": "Preserve stereo PCM16 44100 Hz; trim near-silent tail at -60dB threshold plus 250ms decay; 20ms fade-in and 400ms fade-out; normalize peak to 0.20",
+  "importer": "Tools/import_preparation.py",
+  "importer_sha256": "27776a1b9f6d7a9d02be2cb3dbc15be19d369af7ad5ac904ac5c3b8ef1d7f3d4",
+  "numpy_version": "2.2.3"
+}

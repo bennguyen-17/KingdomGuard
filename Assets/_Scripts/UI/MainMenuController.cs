@@ -29,6 +29,10 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.EnsureInstance().SetMusicState(AudioManager.MusicState.Menu);
+        AudioSettingsUI.EnsureForScene();
+        foreach (Button button in GetComponentsInChildren<Button>(true))
+            button.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
         UpdateLanguageUI();
     }
 

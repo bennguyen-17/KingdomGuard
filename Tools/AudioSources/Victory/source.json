@@ -1,0 +1,21 @@
+{
+  "title": "Victory Fanfare",
+  "author": "Universfield",
+  "license": "Pixabay Content License (not CC0)",
+  "source_page": "https://pixabay.com/sound-effects/musical-victory-fanfare-152480/",
+  "license_url": "https://pixabay.com/service/license-summary/",
+  "verified_date": "2026-11-02",
+  "delivery": "User supplied WAV downloaded from the selected Pixabay item; original site lists MP3, conversion history not supplied",
+  "original_path": "Tools/AudioSources/Victory/universfield-victory-fanfare-152480.wav",
+  "original_sha256": "aa21f005115151a5c37b77c5891b8e06ae817dac7e156e0e1a660fc32eeffab7",
+  "original_seconds": 3.813877551020408,
+  "original_rate": 44100,
+  "original_channels": 2,
+  "runtime_path": "Assets/Resources/Audio/SFX/SFX_Victory.wav",
+  "runtime_sha256": "a95ba109338e804cbb9ec10e40fcff9d78f3cb292a0ca709b211639b7f9c4208",
+  "runtime_seconds": 3.813877551020408,
+  "processing": "Keep full duration, stereo PCM16 44100 Hz; 1ms fade-in and 20ms fade-out; normalize peak to 0.30; no speed/pitch change or added reverb",
+  "importer": "Tools/import_victory.py",
+  "importer_sha256": "4bc52448fd4843e6957d0394b72e41b7751047ea8d7bb59265f21cfca4476509",
+  "numpy_version": "2.2.3"
+}

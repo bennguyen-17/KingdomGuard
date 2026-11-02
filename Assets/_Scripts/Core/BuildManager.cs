@@ -147,6 +147,7 @@ public class BuildManager : MonoBehaviour
 
         Pointer ptr = Pointer.current;   // chuột + cảm ứng (New Input System)
         if (ptr == null || !ptr.press.wasPressedThisFrame) return;
+        if (AudioSettingsUI.ConsumesPointer(ptr.position.ReadValue())) return;
 
         Vector3 world = cam.ScreenToWorldPoint(ptr.position.ReadValue());
         world.z = 0f;   // camera ở z=-10, tilemap ở z=0: nếu không đặt về 0 sẽ không tìm ra ô
@@ -274,12 +275,14 @@ public class BuildManager : MonoBehaviour
         {
             bool maxed = o.kind == Kind.Upgrade && openNode.Tower != null && !openNode.Tower.CanUpgrade;
             Say(maxed ? "Max level" : "Not enough gold");
+            if (!maxed) AudioManager.Instance?.PlayBuildFailed();
             return;
         }
 
         if (pending != i)   // click lần 1: chỉ chọn, hiện giá + tầm bắn
         {
             pending = i;
+            AudioManager.Instance?.PlayUIClick();
             UpdateRange();
             return;
         }
@@ -294,12 +297,14 @@ public class BuildManager : MonoBehaviour
                 Tower tower = go.GetComponent<Tower>();
                 tower.Setup(def);
                 openNode.Tower = tower;
+                AudioManager.Instance?.PlayTowerPlace();
                 break;
             }
             case Kind.Upgrade:
             {
                 GameManager.Money -= openNode.Tower.UpgradeCost;
                 openNode.Tower.Upgrade();
+                AudioManager.Instance?.PlayTowerPlace();
                 break;
             }
             case Kind.Sell:
@@ -307,6 +312,7 @@ public class BuildManager : MonoBehaviour
                 GameManager.Money += o.cost;
                 Destroy(openNode.Tower.gameObject);
                 openNode.Tower = null;
+                AudioManager.Instance?.PlayTowerPlace();
                 break;
             }
         }

@@ -151,6 +151,7 @@ public class WaveSpawner : MonoBehaviour
             {
                 waitingForNextWave = true;
                 timer = timeBetweenWaves;
+                AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Preparation);
             }
         }
     }
@@ -173,6 +174,7 @@ public class WaveSpawner : MonoBehaviour
 
     private void StartWave()
     {
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Battle);
         waitingForNextWave = false;
         waveIndex++;
         timer = 0f;

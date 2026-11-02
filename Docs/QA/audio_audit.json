@@ -1,0 +1,152 @@
+[
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+    "seconds": 23.2,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.19809,
+    "rms": 0.02281,
+    "clipped_samples": 0,
+    "sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f"
+  },
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+    "seconds": 31.2,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.20035,
+    "rms": 0.05409,
+    "clipped_samples": 0,
+    "sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4"
+  },
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+    "seconds": 23.2,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.19803,
+    "rms": 0.03346,
+    "clipped_samples": 0,
+    "sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6"
+  },
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
+    "seconds": 79.766,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.19998,
+    "rms": 0.02652,
+    "clipped_samples": 0,
+    "sha256": "8b34623019254da4112c3b921aa96b320046057d2d7dfd50e1bc0af916e942e5"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav",
+    "seconds": 0.15,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.27408,
+    "rms": 0.07948,
+    "clipped_samples": 0,
+    "sha256": "a661a3b81c5ea167a67a22cf340ade5310d374e11d8a4bccfd6abbd70c3f23c3"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Base_Damage.wav",
+    "seconds": 0.35,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.29999,
+    "rms": 0.1299,
+    "clipped_samples": 0,
+    "sha256": "fb0aae6a2faf953afe7041276c0b2fcb1b77acd94d61ed7a1c30aaac8c42fc00"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Build_Failed.wav",
+    "seconds": 0.25,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.23996,
+    "rms": 0.10392,
+    "clipped_samples": 0,
+    "sha256": "5c238b54dd640b54a58a20732d3540d39364ef9392d648bfd0ef6ed4e3f335a1"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Cannon_Shoot.wav",
+    "seconds": 0.45,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.16901,
+    "rms": 0.04905,
+    "clipped_samples": 0,
+    "sha256": "d3b4acce8b65ee66e400ee0ec013d029700485d54b9494174db373db98230c38"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
+    "seconds": 3.344,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.29999,
+    "rms": 0.03084,
+    "clipped_samples": 0,
+    "sha256": "51bdb53d195863f25310a9409150e86666497d49388e73a44304dfeeddd0d7ec"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav",
+    "seconds": 0.3,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.27997,
+    "rms": 0.12124,
+    "clipped_samples": 0,
+    "sha256": "ab54fa4fdbecea5183166ef099b4b90757525dd9340278525c562fbfc0762c62"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Hit.wav",
+    "seconds": 0.12,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.27695,
+    "rms": 0.08022,
+    "clipped_samples": 0,
+    "sha256": "f5ef19cc2c64fb680fb02d1817df6a60adcd0beadd851fecfe718b3df1a3efbc"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Magic_Shoot.wav",
+    "seconds": 0.24,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.28403,
+    "rms": 0.10598,
+    "clipped_samples": 0,
+    "sha256": "da156bef872664d5c1dd47a231d4df00263c1ebc19a7c8a80e8c479284f630cf"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
+    "seconds": 0.331,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.25,
+    "rms": 0.0331,
+    "clipped_samples": 0,
+    "sha256": "ed7834117563c8d22b3c8922c69cc87b29616558d69c714b22723637854d92b8"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_UI_Click.wav",
+    "seconds": 0.06,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.19986,
+    "rms": 0.0866,
+    "clipped_samples": 0,
+    "sha256": "76a1075c4e6639e6bb29b3da56c5e3054d1084bca7ac17d8e6523bad025e9a3f"
+  },
+  {
+    "path": "Assets/Resources/Audio/SFX/SFX_Victory.wav",
+    "seconds": 3.814,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.29999,
+    "rms": 0.04668,
+    "clipped_samples": 0,
+    "sha256": "a95ba109338e804cbb9ec10e40fcff9d78f3cb292a0ca709b211639b7f9c4208"
+  }
+]

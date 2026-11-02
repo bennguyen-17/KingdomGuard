@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         GameIsOver = false;
         Time.timeScale = 1f;
+        AudioManager.EnsureInstance();
         resultUI = GetComponent<UIManager>();
         if (resultUI == null) resultUI = FindAnyObjectByType<UIManager>(FindObjectsInactive.Include);
         if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();   
@@ -111,6 +112,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         GameIsOver = false;
         IsGameplayActive = true;
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Preparation);
         resultUI.HideMenus();
         FindAnyObjectByType<WaveSpawner>()?.BeginWaveSequence();
     }

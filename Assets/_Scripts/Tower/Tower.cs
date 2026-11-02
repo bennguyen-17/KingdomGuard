@@ -117,6 +117,12 @@ public class Tower : MonoBehaviour
             float critMult = Stats.critMultiplier > 1f ? Stats.critMultiplier : 1.5f;
 
             bullet.Init(target, Stats.damage, Stats.projectileSpeed, splash, crit, critMult, isCannonType);
+            if (isCannonType || Stats.shotSound == TowerData.ShotSound.Cannon)
+                AudioManager.Instance?.PlayCannonShoot();
+            else if (Stats.shotSound == TowerData.ShotSound.Magic)
+                AudioManager.Instance?.PlayMagicShoot();
+            else if (Stats.shotSound == TowerData.ShotSound.Arrow)
+                AudioManager.Instance?.PlayArrowShoot();
         }
     }
 }

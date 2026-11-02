@@ -103,6 +103,7 @@ public class Bullet : MonoBehaviour
 
     private void ExplodeOrHit()
     {
+        AudioManager.Instance?.PlayHit();
         if (impactPrefab != null)
         {
             Instantiate(impactPrefab, transform.position, Quaternion.identity);

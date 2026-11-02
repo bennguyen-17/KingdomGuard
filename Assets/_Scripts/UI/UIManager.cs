@@ -137,6 +137,9 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        AudioSettingsUI.EnsureForScene();
+        foreach (Button button in GetComponentsInChildren<Button>(true))
+            button.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
         ApplyResultScreenStyling();
         UpdateLocalizedUI();
     }
@@ -451,6 +454,7 @@ public class UIManager : MonoBehaviour
     {
         if (screenShown) return;
         screenShown = true;
+        AudioManager.Instance?.PlayVictory();
 
         UpdateLocalizedUI();
         if (isPaused) ResumeGame();
@@ -473,6 +477,7 @@ public class UIManager : MonoBehaviour
     {
         if (screenShown) return;
         screenShown = true;
+        AudioManager.Instance?.PlayDefeat();
 
         UpdateLocalizedUI();
         if (isPaused) ResumeGame();
@@ -562,6 +567,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowMainMenu()
     {
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Menu);
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }

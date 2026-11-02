@@ -1,0 +1,25 @@
+{
+  "loop_seams": [
+    {
+      "path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+      "loop_seam_step": 0.0
+    },
+    {
+      "path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+      "loop_seam_step": 0.0
+    },
+    {
+      "path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+      "loop_seam_step": 0.0
+    },
+    {
+      "path": "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
+      "loop_seam_step": 0.0
+    }
+  ],
+  "max_combat_voices": 4,
+  "effects_headroom": 0.65,
+  "conservative_peak_bound": 0.8944915,
+  "assumptions": "Current clips, built-in cue gains, user volumes at 100%, no external AudioSource gain/FX; four combat voices plus one priority and one UI voice; sum of absolute peaks",
+  "perceptual_listening": "Not verified by PCM analysis"
+}
