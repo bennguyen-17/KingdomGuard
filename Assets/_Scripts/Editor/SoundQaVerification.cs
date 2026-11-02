@@ -135,8 +135,10 @@ public static class SoundQaVerification
                     audio.SetMusicState(AudioManager.MusicState.Preparation);
                     Check(audio.CurrentMusicState == AudioManager.MusicState.Preparation, "Preparation state selects quiet track");
                     WaveSpawner spawner = UnityEngine.Object.FindAnyObjectByType<WaveSpawner>();
-                    spawner.totalWaves = 1; spawner.enemiesPerWave = 1; spawner.spawnInterval = .1f;
+                    spawner.totalWaves = 1;
+                    spawner.waveConfigs = new[] { new WaveSpawner.WaveDefinition { goblinCount = 1, orcCount = 0, spawnInterval = .1f } };
                     gm.StartSelectedLevel(SceneManager.GetActiveScene().path);
+                    spawner.StartFirstWave();
                     Check(audio.CurrentMusicState == AudioManager.MusicState.Battle, "Starting a wave selects battle music");
                     break;
                 case 2:

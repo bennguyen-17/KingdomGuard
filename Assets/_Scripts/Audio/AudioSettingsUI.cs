@@ -7,6 +7,19 @@ public class AudioSettingsUI : MonoBehaviour
     private GameObject panel;
     private AudioManager audioManager;
 
+    public static void EnsureForScene()
+    {
+        if (FindAnyObjectByType<AudioSettingsUI>() != null) return;
+        GameObject root = new GameObject("Audio Settings Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        Canvas canvas = root.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 200;
+        CanvasScaler scaler = root.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1600, 900);
+        root.AddComponent<AudioSettingsUI>();
+    }
+
     private void Start()
     {
         audioManager = AudioManager.EnsureInstance();

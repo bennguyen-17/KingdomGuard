@@ -1,9 +1,10 @@
 {
   "passed": [
+    "Build scene exists and GUID matches: Assets/Scenes/MainMenu.unity",
     "Build scene exists and GUID matches: Assets/Scenes/Level_1.unity",
     "Build scene exists and GUID matches: Assets/Scenes/Level_2.unity",
     "Build scene exists and GUID matches: Assets/Scenes/Level_3.unity",
-    "No duplicate GUIDs among 1717 asset metadata files",
+    "No duplicate GUIDs among 1785 asset metadata files",
     "All runtime audio scripts and clips have metadata"
   ],
   "duplicate_guids": []

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43592f6c758ee5846a6f613112bb765c, type: 3}
+  m_Name: Cannon_Lv2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  range: 5.2
+  shootInterval: 1.35
+  projectileSpeed: 10
+  projectileDuration: 2
+  damage: 39
+  cost: 60
+  sprite: {fileID: -8735398849735464583, guid: c65f1b1389fedc842baf3ed8c3694231, type: 3}
+  bulletPrefab: {fileID: 5720645011817580300, guid: 886a623ad585ed546b5be941b8257e35, type: 3}
+  splashRadius: 1
+  critChance: 0.15
+  critMultiplier: 1.5
+  isCannon: 1

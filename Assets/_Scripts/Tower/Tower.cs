@@ -2,69 +2,125 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [SerializeField] private TowerData data;
-    public GameObject bulletPrefab;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    public TowerDefinition Definition { get; private set; }
+    public int Level { get; private set; }
+    public int TotalSpent { get; private set; }   // để tính tiền hoàn khi bán
+
+    private TowerData Stats => Definition.levels[Level];
+
+    /// <summary>
+    /// Tầm bắn thực tế: Đảm bảo tháp luôn với tới được đường đi trên Scene Level hiện tại.
+    /// Do Scene vẽ ô đất cách waypoint từ 3.0 đến 4.0 unit, nên Cannon cần tối thiểu 3.8 và Archer 4.5.
+    /// </summary>
+    public float Range => (Definition != null) ? Stats.range : 0f;
+
+    public bool CanUpgrade => Definition != null && Level + 1 < Definition.levels.Length;
+    public int UpgradeCost => CanUpgrade ? Definition.levels[Level + 1].cost : 0;
+    public float NextRange => CanUpgrade ? Definition.levels[Level + 1].range : Range;
+
     private Transform target;
+    private float fireCountdown;
 
-    // Các biến lấy từ TowerData (hoặc dùng trực tiếp nếu chưa gắn TowerData)
-    private float range => data != null ? data.range : 4f;
-    private float fireRate => data != null ? (1f / data.shootInterval) : 1f;
-    private float fireCountdown = 0f;
-
-    void Start()
+    // BuildManager gọi ngay sau khi Instantiate
+    public void Setup(TowerDefinition definition)
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        Definition = definition;
+        Level = 0;
+        TotalSpent = Stats.cost;
+        ApplyVisual();
     }
-    
-    void UpdateTarget()
+
+    public void Upgrade()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        float shortestDistance = Mathf.Infinity; 
-        GameObject nearestEnemy = null;
-        
-        foreach (GameObject enemy in enemies)
+        if (!CanUpgrade) return;
+        Level++;
+        TotalSpent += Stats.cost;
+        ApplyVisual();
+    }
+
+    private void ApplyVisual()
+    {
+        if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null && Stats.sprite != null) spriteRenderer.sprite = Stats.sprite;
+    }
+
+    private void Start()
+    {
+        InvokeRepeating(nameof(UpdateTarget), 0f, 0.2f);
+    }
+
+    /// <summary>
+    /// Targeting "First" chuẩn GDD:
+    /// Quét tất cả quái vật nằm trong tầm bắn (Range), chọn con đang ở gần Lâu đài nhất
+    /// (quãng đường còn lại đến đích ngắn nhất) để ưu tiên tiêu diệt cứu thành.
+    /// </summary>
+    private void UpdateTarget()
+    {
+        if (Definition == null) return;
+
+        Enemy[] enemies = FindObjectsByType<Enemy>();
+        float shortestDistanceToGoal = Mathf.Infinity;
+        Transform firstTarget = null;
+
+        foreach (Enemy enemy in enemies)
         {
-            float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy < shortestDistance)
+            if (enemy == null) continue;
+            float distanceToTower = Vector2.Distance(transform.position, enemy.transform.position);
+            if (distanceToTower <= Range)
             {
-                shortestDistance = distanceToEnemy; 
-                nearestEnemy = enemy;
+                float distToGoal = enemy.GetDistanceToGoal();
+                if (distToGoal < shortestDistanceToGoal)
+                {
+                    shortestDistanceToGoal = distToGoal;
+                    firstTarget = enemy.transform;
+                }
             }
         }
-        
-        if (nearestEnemy != null && shortestDistance <= range)
-            target = nearestEnemy.transform;
-        else
+
+        target = firstTarget;
+    }
+
+    private void Update()
+    {
+        if (Definition == null) return;
+
+        // Nếu quái đã bị tiêu diệt hoặc chạy ra khỏi tầm bắn -> bỏ nhắm
+        if (target != null && Vector2.Distance(transform.position, target.position) > Range)
+        {
             target = null;
-    }
-   
-    void Update()
-    {
-        if (target == null) return; 
-        
-        fireCountdown -= Time.deltaTime; 
-        if (fireCountdown <= 0f)
-        {
-            Shoot(); 
-            fireCountdown = 1f / fireRate; 
-        }
-    }
-    
-    void Shoot()
-    {
-        GameObject bulletGO = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        
-        Bullet bulletScript = bulletGO.GetComponent<Bullet>();
-        
-        if (bulletScript != null)
-        {
-            bulletScript.Seek(target);
         }
 
-        if (data != null && data.shotSound == TowerData.ShotSound.Cannon)
-            AudioManager.Instance?.PlayCannonShoot();
-        else if (data == null || data.shotSound == TowerData.ShotSound.Arrow)
-            AudioManager.Instance?.PlayArrowShoot();
+        if (target != null)
+        {
+            fireCountdown -= Time.deltaTime;
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = Mathf.Max(0.05f, Stats.shootInterval);
+            }
+        }
+    }
+
+    private void Shoot()
+    {
+        GameObject prefab = Stats.bulletPrefab;
+        if (prefab == null) return;
+
+        GameObject go = Instantiate(prefab, transform.position, Quaternion.identity);
+        if (go.TryGetComponent(out Bullet bullet))
+        {
+            bool isCannonType = Stats.isCannon || (Definition != null && Definition.towerName.ToLower().Contains("cannon"));
+            float splash = Stats.splashRadius > 0f ? Stats.splashRadius : (isCannonType ? 1.0f : 0f);
+            float crit = Stats.critChance > 0f ? Stats.critChance : (isCannonType ? 0.15f : 0f);
+            float critMult = Stats.critMultiplier > 1f ? Stats.critMultiplier : 1.5f;
+
+            bullet.Init(target, Stats.damage, Stats.projectileSpeed, splash, crit, critMult, isCannonType);
+            if (isCannonType || Stats.shotSound == TowerData.ShotSound.Cannon)
+                AudioManager.Instance?.PlayCannonShoot();
+            else if (Stats.shotSound == TowerData.ShotSound.Arrow)
+                AudioManager.Instance?.PlayArrowShoot();
+        }
     }
 }

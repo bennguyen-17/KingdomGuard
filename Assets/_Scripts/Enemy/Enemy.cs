@@ -2,15 +2,35 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Chỉ số của Quái")]
-    public float speed = 3f;
+    [Header("Chỉ số của Quái (GDD)")]
+    public float maxHealth = 50f;
+    public float speed = 2f;
+    public int goldReward = 5;
+    public int damageToCastle = 1;
+    public bool isFlying = false;
 
+    [Header("Visual Effects Prefabs")]
+    [SerializeField] private GameObject deathEffectPrefab;
+    [SerializeField] private GameObject coinDropPrefab;
+
+    private float currentHealth;
+    public string EnemyKey { get; private set; } = "Goblin";
+    public float CurrentHealth => currentHealth;
     private int targetIndex = 0;
     private Transform targetPoint;
-    private float health = 100f;
     private WaveSpawner waveSpawner;
     private bool removedFromWave;
     private Waypoints path;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        currentHealth = maxHealth;
+        if (GetComponent<EnemyHealthBar>() == null) gameObject.AddComponent<EnemyHealthBar>();
+    }
 
     public void Initialize(WaveSpawner spawner, Waypoints assignedPath)
     {
@@ -27,7 +47,51 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Configure(EnemyData data, float hpMultiplier = 1f)
+    {
+        if (data == null) return;
+        EnemyKey = data.enemyName;
+        maxHealth = data.baseHealth * hpMultiplier;
+        currentHealth = maxHealth;
+        speed = data.speed;
+        goldReward = data.goldReward;
+        damageToCastle = data.damageToCastle;
+        isFlying = data.isFlying;
+
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (data.sprite != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = data.sprite;
+            spriteRenderer.color = data.tintColor;
+        }
+
+        if (animator == null) animator = GetComponent<Animator>();
+        if (animator != null && !string.IsNullOrEmpty(data.animationStateName))
+        {
+            animator.Play(data.animationStateName);
+        }
+    }
+
+    public void ConfigureDirect(string enemyName, float baseHp, float spd, int reward, int castleDmg, float hpMultiplier = 1f, string animName = "Goblin_Walk", bool flying = false)
+    {
+        EnemyKey = enemyName;
+        maxHealth = baseHp * hpMultiplier;
+        currentHealth = maxHealth;
+        speed = spd;
+        goldReward = reward;
+        damageToCastle = castleDmg;
+        isFlying = flying;
+
+        if (animator == null) animator = GetComponent<Animator>();
+        if (animator != null && !string.IsNullOrEmpty(animName))
+        {
+            animator.Play(animName);
+        }
+
+
+    }
+
+    private void Start()
     {
         if (targetPoint == null && path != null && path.PointCount > 0)
         {
@@ -35,7 +99,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (targetPoint == null) return;
 
@@ -47,7 +111,8 @@ public class Enemy : MonoBehaviour
 
             if (path == null || targetIndex >= path.PointCount)
             {
-                GameManager.Lives -= 1;
+                // Quái đã vào tới Lâu đài -> Trừ máu theo GDD (Goblin: 1, Orc: 2)
+                GameManager.Lives = Mathf.Max(0, GameManager.Lives - damageToCastle);
                 AudioManager.Instance?.PlayBaseDamage();
                 NotifyRemoved(false);
                 Destroy(gameObject);
@@ -58,19 +123,58 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float amount)
+    /// <summary>
+    /// Tính quãng đường còn lại mà quái cần đi để chạm tới Lâu đài.
+    /// Dùng cho cơ chế Targeting "First" (quái nào có khoảng cách này nhỏ nhất thì bị tháp ưu tiên bắn trước).
+    /// </summary>
+    public float GetDistanceToGoal()
     {
-        health -= amount; // Bị trừ máu
+        if (path == null || path.PointCount == 0) return Vector2.Distance(transform.position, Vector2.zero);
+        if (targetIndex >= path.PointCount) return 0f;
 
-        if (health <= 0f)
+        float distance = Vector2.Distance(transform.position, path.GetPoint(targetIndex).position);
+        for (int i = targetIndex; i < path.PointCount - 1; i++)
+        {
+            Transform pA = path.GetPoint(i);
+            Transform pB = path.GetPoint(i + 1);
+            if (pA != null && pB != null)
+            {
+                distance += Vector2.Distance(pA.position, pB.position);
+            }
+        }
+        return distance;
+    }
+
+    public void TakeDamage(float amount, bool isExplosion = false)
+    {
+        // Quái bay (Bat) miễn nhiễm sát thương nổ từ Tháp Pháo
+        if (isFlying && isExplosion) return;
+
+        currentHealth -= amount;
+
+        if (currentHealth <= 0f)
         {
             Die();
         }
     }
 
-    void Die()
+    private void Die()
     {
         AudioManager.Instance?.PlayEnemyDeath();
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        if (coinDropPrefab != null)
+        {
+            GameObject coinObj = Instantiate(coinDropPrefab, transform.position + Vector3.up * 0.2f, Quaternion.identity);
+            if (coinObj.TryGetComponent(out CoinDropVFX vfx))
+            {
+                vfx.Init(goldReward);
+            }
+        }
+
         NotifyRemoved(true);
         Destroy(gameObject);
     }
@@ -79,6 +183,6 @@ public class Enemy : MonoBehaviour
     {
         if (removedFromWave) return;
         removedFromWave = true;
-        waveSpawner?.NotifyEnemyRemoved(defeated);
+        waveSpawner?.NotifyEnemyRemoved(defeated, goldReward);
     }
 }

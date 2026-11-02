@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static int Money;
-    public int startMoney = 100;
+    public int startMoney = 200;
     public static int Lives;
     public int startLives = 20;
     public static bool GameIsOver { get; private set; }
@@ -29,31 +29,16 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         AudioManager.EnsureInstance();
         resultUI = GetComponent<UIManager>();
-        if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();
-
-        if (AudioManager.Instance == null && FindAnyObjectByType<AudioManager>() == null)
-        {
-            GameObject audioObj = new GameObject("AudioManager");
-            audioObj.AddComponent<AudioManager>();
+        if (resultUI == null) resultUI = FindAnyObjectByType<UIManager>(FindObjectsInactive.Include);
+        if (resultUI == null) resultUI = gameObject.AddComponent<UIManager>();   
         }
-    }
 
     private void Start()
     {
         WaveSpawner spawner = FindAnyObjectByType<WaveSpawner>();
         if (spawner != null) ConfigureWaves(spawner.totalWaves);
         ResetRunStats();
-
-        string pendingScene = PlayerPrefs.GetString(PendingLevelKey, string.Empty);
-        if (pendingScene == SceneManager.GetActiveScene().path)
-        {
-            PlayerPrefs.DeleteKey(PendingLevelKey);
-            BeginGameplay();
-        }
-        else
-        {
-            resultUI.ShowMainMenu();
-        }
+        BeginGameplay();
     }
 
     private void Update()
@@ -117,10 +102,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         GameIsOver = false;
         IsGameplayActive = false;
-        MainMenuUI.Instance?.SetBackgroundVisible(true);
         FindAnyObjectByType<WaveSpawner>()?.ResetForMenu();
         ResetRunStats();
-        resultUI.ShowMainMenu();
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void BeginGameplay()
@@ -128,7 +112,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         GameIsOver = false;
         IsGameplayActive = true;
-        MainMenuUI.Instance?.SetBackgroundVisible(false);
+        AudioManager.Instance?.SetMusicState(AudioManager.MusicState.Preparation);
         resultUI.HideMenus();
         FindAnyObjectByType<WaveSpawner>()?.BeginWaveSequence();
     }
