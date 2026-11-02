@@ -1,0 +1,65 @@
+{
+  "title": "All-Conquering Tide (title inferred from user filename)",
+  "author": "Not supplied",
+  "license": "Specific license and source URL not supplied",
+  "source_page": "WAV supplied locally by user",
+  "verified_date": "2026-11-02",
+  "original_path": "Tools/AudioSources/Battle/All-Conquering-Tide_user.wav",
+  "original_sha256": "51019057925f8010942409c953a589f8c633983ada14b4fa3bf8ef232d74b41a",
+  "original_seconds": 267.2783333333333,
+  "original_rate": 48000,
+  "original_channels": 2,
+  "original_full_scale_samples": 28,
+  "processing": "Stereo PCM16 44100 Hz; polyphase resampling 147/160; common gain 0.20; 800ms cyclic linear overlap; 5ms endpoint fades; unchanged pitch and speed. Section selection uses RMS and spectral flux; musical listening review pending.",
+  "importer": "Tools/import_battle.py",
+  "importer_sha256": "7fd2dae70b549f29649d249f4d36df7a71b0edbb705701d371193e7a4cddfce2",
+  "runtime_assets": [
+    {
+      "tier": "Calm",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+      "runtime_sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+      "runtime_seconds": 23.2,
+      "source_start": 128,
+      "source_end": 152
+    },
+    {
+      "tier": "Tense",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+      "runtime_sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+      "runtime_seconds": 23.2,
+      "source_start": 56,
+      "source_end": 80
+    },
+    {
+      "tier": "Intense",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+      "runtime_sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4",
+      "runtime_seconds": 31.2,
+      "source_start": 200,
+      "source_end": 232
+    }
+  ],
+  "analysis": [
+    {
+      "tier": "Calm",
+      "source_start": 128,
+      "source_end": 152,
+      "source_rms": 0.11687499573111405,
+      "mean_spectral_flux": 0.10293261714200613
+    },
+    {
+      "tier": "Tense",
+      "source_start": 56,
+      "source_end": 80,
+      "source_rms": 0.16968006749753642,
+      "mean_spectral_flux": 0.22588655823610293
+    },
+    {
+      "tier": "Intense",
+      "source_start": 200,
+      "source_end": 232,
+      "source_rms": 0.2720208616746429,
+      "mean_spectral_flux": 0.43744119897646583
+    }
+  ]
+}

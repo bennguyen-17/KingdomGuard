@@ -1,51 +1,51 @@
-# Kế hoạch kiểm thử Sound và MVP
+﻿# Kế hoạch kiểm thử Sound và MVP
 
-Ngày 26/10/2026. QA phụ trách: Văn Khải. Môi trường mục tiêu: Unity 6000.6.0f1, Windows x64. Kết quả chạy máy nằm trong `unity_verification.json` và `audio_audit.json`; không suy ra PASS manual từ việc có test case.
+Cập nhật 02/11/2026. QA: Văn Khải. Unity 6000.6.0f1, Windows x64. Kết quả Sound mới: sound_completion_2026-11-02.json, 62 assertion Play Mode sau bổ sung Battle thích ứng; player_smoke.json ghi xác minh bốn scene và lưu âm lượng qua process mới. Xem BATTLE_ADAPTIVE_2026-11-02.md cho kết quả đầy đủ của lần cập nhật. Không suy ra PASS nghe hoặc input native từ kết quả tự động.
 
-## Cách chạy lại
+## Chạy lại
 
-Đóng Unity đang mở cùng project rồi chạy `powershell -ExecutionPolicy Bypass -File Tools/run_sound_qa.ps1`. Runner vào Play Mode, kiểm tra runtime, khôi phục các PlayerPrefs mà phép thử thay đổi, build Windows development và chạy smoke trên executable. Quá trình build mất vài phút. Log chi tiết ở `Logs/SoundQaVerification.log` và `Logs/AudioPlayerSmoke.log`; executable ở `Builds/QA/KingdomGuard.exe`.
+Đóng Editor cùng project, chạy `powershell -ExecutionPolicy Bypass -File Tools/run_sound_qa.ps1`. Runner khôi phục preference/tùy chọn Editor sau test, build Windows và chạy các process player. Log ở Logs; executable ở Builds/QA/KingdomGuard.exe.
 
-Chạy `python Tools/audio_audit.py` để kiểm tra PCM. Không truyền `--generate-originals` khi chỉ muốn kiểm tra.
+`python Tools/audio_audit.py` kiểm tra 15 clip, hash, loop seam và bound mix. `python Tools/audio_review_mix.py` tạo Builds/QA/AudioReview.wav và số đo. `python Tools/import_battle.py` tạo ba loop và Builds/QA/BattleAdaptiveReview.wav từ bản nhạc đã lưu. Chỉ dùng `--generate-originals` khi chủ động muốn sinh lại audio.
 
 ## Ma trận kiểm thử
 
-| ID | Phép thử và bước chính | Kết quả mong đợi | Cách xác minh / trạng thái |
+| ID | Phép thử | Mong đợi | Trạng thái |
 |---|---|---|---|
-| AU01 | Mở Level_1 từ trạng thái sạch | Một AudioManager, tải 12 clip | Play Mode tự động, xem JSON |
-| AU02 | Tạo manager thứ hai, chờ một frame | Manager trùng bị xóa | Play Mode tự động |
-| AU03 | Mở SOUND, kéo Music/Effects | Thay đổi riêng, đúng phần trăm | Callback tự động; thao tác chuột chưa nghiệm thu |
-| AU04 | Truyền volume -1 và 2 | Clamp về 0 và 1, lưu PlayerPrefs | Play Mode tự động |
-| AU05 | Chuyển Level_1 → 2 → 3 | Một manager, giữ volume | Play Mode và player smoke |
-| AU06 | Bắt đầu wave | State Battle | Play Mode tự động |
-| AU07 | Chuyển state Preparation | State đúng và dùng track yên hơn | Tự động kiểm tra state; nghe chưa nghiệm thu |
-| AU08 | Diệt quái cuối bằng test harness | Win, timeScale=0, state Result | Play Mode tự động, không phải lượt thắng tự nhiên |
-| AU09 | Đặt Lives=0 trong test harness | Lose và state Result | Play Mode tự động |
-| AU10 | Từ kết quả về menu | timeScale=1, Menu | Play Mode tự động |
-| AU11 | Đọc tất cả WAV bằng PCM parser | Không im lặng toàn clip, không clipping full-scale | Python tự động |
-| AU12 | Mở bản Windows qua flag smoke | Ba scene có manager, UI và đủ clip | Player smoke, log PASS từng scene |
-| AU13 | Chuột kéo thanh volume, click TEST SOUND | Nghe rõ thay đổi, Music không đổi gain SFX | Có test PointerEventData mapping; chuột native và nghe chưa nghiệm thu |
-| AU14 | Điều hướng slider bằng bàn phím | Chọn và đổi giá trị đúng; focus thấy rõ | Có test AxisEventData; bàn phím native chưa nghiệm thu |
-| AU15 | Thoát mở lại ứng dụng | Volume giữ đúng sau process mới | Manual chưa chạy; automation chỉ kiểm tra lưu và giữ qua scene |
-| AU16 | Nghe Preparation/Battle loop 3 vòng | Không click, không hụt nhịp khó chịu | Manual chưa chạy |
-| AU17 | 10+ tháp bắn cùng lúc | Cảnh báo/UI nghe được, không quá ồn | Bị chặn bởi placement/prefab; limiter cần nghe duyệt |
-| AU18 | Đặt tháp hợp lệ | Thành công đúng một SFX sau giao dịch | Bị chặn bởi placement |
-| AU19 | Đặt ở ô sai/thiếu Gold | Âm lỗi; không tạo tháp, không trừ Gold | Bị chặn bởi placement |
-| AU20 | Archer và Cannon bắn xen kẽ | Đúng âm từng loại | Routing đã có; bị chặn prefab Cannon trong gameplay |
-| AU21 | Quái lọt vào lâu đài | Giảm HP đúng; nghe cảnh báo ngắn | Hook đã có; nghe manual chưa chạy |
-| AU22 | Thua/thắng rồi retry nhiều lần | Không nhạc chồng, không SFX trận cũ | State tự động một chu kỳ; manual nhiều chu kỳ chưa chạy |
-| AU23 | Mở SOUND ở 1280×720, 1600×900, 1920×1080 | Không tràn, không che nút quan trọng khi đóng | Đã xem 3 ảnh render Unity: panel không tràn, nút PLAY không bị che; chưa native desktop |
-| GP01 | Mua hai loại tháp bằng Gold | Đủ tiền mới mua, trừ chính xác một lần | Bị chặn bởi placement |
-| GP02 | Goblin/Orc cùng wave | HP/tốc độ/thưởng khác nhau đúng dữ liệu | Bị chặn bởi EnemyData và wave config |
-| GP03 | Chọn mục tiêu First | Ưu tiên quái tiến xa nhất | Chưa đạt khi kiểm tra code: đang nearest |
-| GP04 | Hai đạn trúng một quái cùng frame | Thưởng và âm chết đúng một lần | Chưa chạy; cần guard health/death nếu tái hiện |
-| GP05 | Chơi thật 5–6 wave | Có chiến thuật thắng được, HUD đúng | Bị chặn MVP |
-| GP06 | Kiểm tra 3 chiến thuật × 3 lượt | Có phiếu Gold/HP/thời gian thực | Bị chặn MVP |
+| AU01 | MainMenu / Level 1 khởi động | Một AudioManager, đủ 15 clip | Đạt Play Mode |
+| AU02 | Tạo manager thứ hai | Loại bản trùng | Đạt Play Mode |
+| AU03 | Music/Effects | Điều chỉnh độc lập, đúng phần trăm | Callback đạt; chuột native chưa duyệt |
+| AU04 | Volume -1 và 2 | Clamp 0–1 | Đạt Play Mode |
+| AU05 | Chuyển qua ba Level | Giữ manager và volume | Đạt Play Mode và player |
+| AU06 | Bắt đầu wave | Nhạc Battle | Đạt bằng WaveSpawner thật |
+| AU07 | Hết wave, còn wave tiếp | Nhạc Preparation | Đạt state/track trong intermission |
+| AU08 | Diệt hết wave test cuối | Win, dừng combat/BGM, một Victory | Đạt test có kiểm soát, không phải thắng tự nhiên |
+| AU09 | HP=0 | Lose, dừng BGM, một Defeat | Đạt test có kiểm soát |
+| AU10 | Về menu | Nhạc Menu và timeScale bình thường | Đạt Play Mode |
+| AU11 | PCM và provenance | Có tín hiệu, không full-scale clipping, hash khớp | Đạt Python |
+| AU12 | Executable smoke | MainMenu + ba Level có audio/UI đúng state | Đạt cả bốn scene, exit 0 |
+| AU13 | Slider / TEST SOUND bằng chuột | Nghe thay đổi gain, không tác động mua tháp | Callback/mute/consume vùng pointer đạt; native và nghe chưa duyệt |
+| AU14 | Bàn phím trên slider | Chọn và đổi giá trị đúng | Chưa chạy lại native; giữ navigation Unity hiện có |
+| AU15 | Đóng rồi mở process mới | Đọc lại Music=0.23, Effects=0.41 | Đạt hai process Windows; phục hồi cấu hình sau test |
+| AU16 | Loop nhạc ba vòng | Không click/gãy nhịp khó chịu | Seam PCM đạt; nghe cảm nhận chưa duyệt |
+| AU17 | Combat dày | Không chồng vô hạn, UI/cảnh báo vẫn có nguồn | Đạt spam 5.000 request, cap 4 voice và mix giả lập; nghe chưa duyệt |
+| AU18 | Chọn/xác nhận mua | Preview không success; sau giao dịch đúng một success | Đạt BuildManager thật qua script |
+| AU19 | Thiếu Gold / click nền | Một error có cooldown, không mất tiền; nền không báo lỗi | Đạt rejection 100 click; không thêm cue vào click nền |
+| AU20 | Archer/Cannon/Magic bắn | Mỗi tháp dùng cue riêng | Đạt Tower.Shoot thật, event sau PlayOneShot |
+| AU21 | Lâu đài mất HP | Cảnh báo ngắn | Hook hiện có; priority dưới spam đạt; nghe chưa duyệt |
+| AU22 | Win/Lose/replay/menu | Không có BGM/combat cũ chạy tiếp | Đạt state, voice stop, fade và replay |
+| AU23 | SOUND ở 720p/900p/1080p | Không tràn, không che wave/pause | Đã xem ba ảnh Unity render; chưa desktop screenshot |
+| GP01 | Mua/nâng cấp/bán | Gold và tháp đúng giao dịch | Đạt controller trong progress audit 02/11; không thay cho click native |
+| GP02 | Goblin/Orc | Chỉ số/thưởng theo loại | Đã có data/prefab; test Goblin đạt; chưa chơi đủ đội hình |
+| GP03 | First targeting | Ưu tiên quái gần đích | Code đã triển khai; chưa test lựa chọn nhiều mục tiêu |
+| GP04 | Hai đạn cùng giết quái | Thưởng/effect chết đúng một lần | Chưa nghiệm thu edge case |
+| GP05 | Chơi thật đủ wave | Có chiến thuật thắng được | Chưa nghiệm thu lượt tự nhiên |
+| GP06 | Ba chiến thuật, mỗi loại ba lượt | Có phiếu Gold/HP/thời gian | Chưa chạy playtest cân bằng |
 
 ## Tiêu chuẩn nghiệm thu
 
-Sound code được chấp nhận kỹ thuật khi import, compile, Play Mode và player smoke đạt. Sound cảm nhận được chấp nhận khi AU13–AU23 đạt hoặc có ngoại lệ được nhóm ghi rõ. MVP chỉ chấp nhận khi GP01–GP06 đạt, không còn blocker/high, và một người khác chạy bản Windows thành công. Không dùng test ép Win làm bằng chứng cân bằng.
+Battle thích ứng bổ sung 10 kiểm tra chính sách và 12 kiểm tra tích hợp vào runner Sound: đếm sống thay vì hàng chờ, ngưỡng 5/10 và 3/7, khoảng giữ, Boss, Pause, hai nguồn crossfade, gain/mute, Result và khôi phục Preparation. Kết quả cảm nhận của ba loop vẫn cần nghe theo BATTLE_ADAPTIVE_2026-11-02.md.
 
-## Mẫu bug và phiên kiểm thử
+Sound kỹ thuật cần import, compile, routing/giao dịch, volume, state, build và player đạt. Sound cảm nhận cần nghe thật loop/mix/cảnh báo; không ghi PASS manual từ số đo PCM. Nghiệm thu MVP và cân bằng là hạng mục riêng, không dùng test ép Win để thay thế.
 
-Bug cần: ID, severity, build/commit, scene, điều kiện, bước tái hiện, expected, actual, log/ảnh, owner, trạng thái và kết quả retest. Phiên kiểm thử cần: ngày, người kiểm tra, thiết bị, độ phân giải, âm lượng hệ thống, kết quả từng ID và các bug mới. Lưu phiên mới thay vì ghi đè kết quả lượt cũ khi cần so sánh.
+Phiên nghe cần ghi ngày, người nghe, loa/tai nghe, âm lượng hệ thống, Music/Effects, tình huống, cảm nhận và thay đổi đề xuất. Mỗi bug cần bước tái hiện, expected/actual, build/commit, log/ảnh, owner và kết quả retest.

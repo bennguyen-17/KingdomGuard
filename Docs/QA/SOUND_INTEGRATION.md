@@ -1,36 +1,50 @@
-# Bàn giao âm thanh
+﻿# Bàn giao âm thanh Kingdom Guard
 
-Ngày 26/10/2026. Runtime dùng duy nhất `Assets/Resources/Audio`. Thư mục `Assets/Audio` cũ được giữ để tránh xóa dữ liệu của người dùng, không được dùng làm nguồn thứ hai khi phát nhạc.
+Cập nhật ngày 02/11/2026. Runtime dùng `Assets/Resources/Audio`, gồm 4 BGM và 11 SFX: 8 clip tổng hợp, Coin Splash CC0, Victory Fanfare của Universfield, FIASCO của olenchic, Preparation và ba đoạn Battle từ WAV người dùng cung cấp. Xem [DEFEAT_UPDATE_2026-11-02.md](DEFEAT_UPDATE_2026-11-02.md), [VICTORY_UPDATE_2026-11-02.md](VICTORY_UPDATE_2026-11-02.md) và [BATTLE_ADAPTIVE_2026-11-02.md](BATTLE_ADAPTIVE_2026-11-02.md). Thư mục `Assets/Audio` giữ các bản cũ chưa rõ nguồn và không được dùng làm nguồn runtime.
 
-## Các trạng thái
+## Luồng sự kiện
 
-| Trạng thái | Điểm gọi | Kết quả |
+| Sự kiện | Điểm gọi | Âm thanh |
 |---|---|---|
-| Menu | UIManager.ShowMainMenu | Nhạc Preparation, dừng hiệu ứng còn lại |
-| Battle | WaveSpawner.StartWave | Nhạc Battle, không tạo thêm AudioManager |
-| Preparation | Hết wave, còn wave tiếp theo | Nhạc Preparation |
-| Result | ShowWinScreen / ShowLoseScreen | Dừng BGM và âm chiến đấu, phát Victory hoặc Defeat |
+| Menu | MainMenuController.Start / UIManager.ShowMainMenu | Preparation |
+| Bắt đầu chuẩn bị màn / nghỉ giữa wave | GameManager.BeginGameplay / WaveSpawner | Preparation |
+| Bắt đầu wave / bắt đầu sớm | WaveSpawner.StartWave | Battle Calm |
+| Quái thực sự còn sống tăng/giảm | BattleMusicDirector, quét mỗi 250ms | Calm / Tense / Intense; 5/10 quái để tăng mức, 3/7 để hạ mức; Boss ưu tiên Intense |
+| Chọn tháp xem trước | BuildManager.Activate, click đầu | UI Click, không phát thành công |
+| Mua tháp thành công | Sau tạo tháp, Setup, trừ Gold và gán node | Tower Place, một lần |
+| Nâng cấp hoặc bán thành công | Sau giao dịch tương ứng | Dùng lại cue xác nhận Tower Place |
+| Thiếu Gold | Khi bấm lựa chọn bị vô hiệu do thiếu tiền | Build Failed, tối đa một lần mỗi 300ms |
+| Bấm nền / đóng menu / ô không đặt được | Không có giao dịch | Không phát lỗi |
+| Archer / Cannon / Magic bắn | Tower.Shoot, sau Bullet.Init | Cue riêng theo TowerData.shotSound |
+| Quái mất máu / chết / lọt lâu đài | Bullet / Enemy | Hit / Enemy Death / Base Damage |
+| UI, kể cả speed bar tạo runtime | UIManager / MainMenuController / GameSpeedController | UI Click |
+| Win / Lose | UIManager | Dừng BGM và combat; phát Victory / Defeat |
 
-Âm chiến đấu, âm cảnh báo/kết quả và âm UI dùng các AudioSource tách nhau. Nhờ đó thao tác về menu có thể dừng tiếng kết quả mà không cắt mất tiếng click. Âm chiến đấu giảm gain, giới hạn một lần mỗi 40 ms toàn hệ thống và 100 ms mỗi clip để giảm chồng tiếng. Đây là giới hạn tần suất, không phải limiter/master compressor; vẫn cần nghe thử mật độ cao.
+BuildManager đã nối trực tiếp AudioManager. BuildAudioFeedback vẫn là adapter tùy chọn cho UnityEvent; không gắn thêm adapter vào cùng giao dịch để tránh gọi trùng. Không phát success từ Tower.Start vì tháp xem trước/dựng sẵn không phải giao dịch.
 
-## Nối placement khi hệ thống được bổ sung
+## Loại tháp
 
-Gắn `BuildAudioFeedback` vào controller đặt tháp. Chỉ gọi `PlacementSucceeded()` sau khi kiểm tra ô, đủ tiền, tạo tháp và trừ Gold thành công. Gọi `PlacementRejected()` khi thiếu tiền hoặc ô không hợp lệ. Các public method có thể nối trực tiếp từ UnityEvent. Không gọi success từ `Tower.Start`, vì tháp dựng sẵn và tháp preview không phải lượt mua.
+`TowerData.shotSound`: Arrow=0, Cannon=1, Magic=2. Cả chín asset level hiện có đã gán rõ enum. Cannon vẫn nhận diện isCannon theo gameplay mới; Magic có clip mới SFX_Magic_Shoot.wav, không dùng âm cung. Thay đổi này chỉ hoàn thiện Sound, không bổ sung slow/AOE cho Mage.
 
-Placement controller hiện chưa tồn tại trong dự án. Vì vậy đây là hợp đồng tích hợp đã chuẩn bị, chưa phải xác nhận âm đặt tháp đã phát qua thao tác người chơi. Owner tích hợp đề xuất: Lan Anh; QA: Văn Khải.
+## Mix và chuyển nhạc
 
-## Nối loại tháp
+- Tối đa bốn voice combat, chỉ dùng voice rảnh; không chồng vô hạn bằng PlayOneShot. Toàn bộ combat giới hạn 40ms/sự kiện và 100ms/clip.
+- Shoot Arrow/Cannon/Magic dùng gain 0.45/0.65/0.5; Hit/Death dùng 0.35/0.5. User Effects volume có hệ số headroom 0.65 trước AudioSource.
+- Warning/confirmation/result và UI có nguồn riêng, mỗi nguồn giữ một cue đang phát; combat không chiếm nguồn của cảnh báo/UI.
+- Music crossfade tuyến tính 1 giây bằng hai AudioSource, dùng unscaledDeltaTime để hoạt động khi pause; tổng gain không vượt Music của người dùng. Không khởi động lại track đang phát chỉ vì cùng state được gọi lại. Logic mức Battle dừng khi pause; xem báo cáo Battle cho ngưỡng và khoảng giữ.
+- Đổi scene về Menu/Preparation dừng tiếng combat và stinger cũ. Result dừng combat/BGM; cue chiến đấu đến muộn bị bỏ qua.
+- Giới hạn peak tính bảo thủ cho các cue tích hợp, volumes 100%: xem audio_mix_audit.json. Đây không phải compressor/limiter cho AudioSource hoặc hiệu ứng ngoài hệ thống.
 
-`TowerData.shotSound`: Arrow=0 (giữ tương thích Archer hiện tại), Cannon=1, Magic=2. Cannon phát âm pháo; Magic không mượn âm cung. Khi làm prefab Cannon, gán TowerData có `shotSound=Cannon`. Chưa có prefab Cannon hoạt động để nghiệm thu đầu cuối.
+## Bảng SOUND và cấu hình
 
-## Điều chỉnh và lưu âm lượng
+SOUND nằm dưới bên phải để không che nút wave/pause phía trên. Panel mở phía trên nút, có Music/Effects, phần trăm, TEST SOUND và CLOSE. Vùng panel/nút SOUND chặn riêng pointer xuống BuildManager; không sửa toàn bộ chính sách input HUD/pause của nhóm.
 
-Nút SOUND góc phải mở Music/Effects, phần trăm, TEST SOUND và CLOSE. Slider hỗ trợ chuột và điều hướng UI bàn phím. Các giá trị được lưu khi đóng bảng, tạm ngừng ứng dụng, thoát ứng dụng và hủy UI khi chuyển scene. Bảng không tự pause trận đấu. AudioSource là 2D và vẫn phát khi gameplay có timeScale=0.
+Music/Effects được lưu khi đóng panel, pause/quit ứng dụng và đổi scene. Getter phản ánh phần trăm người chơi chọn; hệ số headroom SFX là chi tiết mix riêng. Đã có phép thử mở lại process Windows thật để xác minh lưu cấu hình; runner phục hồi preference trước kiểm tra.
 
-## Nguồn và quyền sử dụng
+## Nguồn audio và công cụ
 
-Người dùng xác nhận các clip cũ do AI lấy từ Internet và không biết nguồn cụ thể. Vì vậy toàn bộ 12 clip runtime trong Resources/Audio đã được thay bằng âm thanh tổng hợp gốc từ công thức trong `Tools/audio_audit.py`, không dùng mẫu nhạc bên ngoài. Có thể tái tạo bằng `python Tools/audio_audit.py --generate-originals`. BGM Preparation/Battle dài 16s; toàn bộ 10 SFX ngắn hơn 1s. Nguồn và SHA256 được ghi trong `audio_provenance.json` và `audio_audit.json`.
+Mười một clip được tổng hợp từ công thức trong `Tools/audio_audit.py`; SFX_Tower_Place.wav dùng Coin Splash CC0 của LordTomorrow. BGM_Preparation.wav dùng bản Tender Strength WIP do người dùng đưa; người dùng xác nhận tải từ trang chính thức nhưng chưa cung cấp URL hoặc giấy phép cụ thể. Nguồn gốc/xử lý ghi riêng theo file trong Docs/AUDIO_CREDITS.md và Tools/AudioSources. `--generate-originals` giữ cả hai file ngoài và kiểm tra hash gốc/bản xử lý. Giữ `.meta`/GUID khi thay nội dung.
 
-Các file cũ trong Assets/Audio được giữ nguyên để người dùng tham khảo, có nguồn chưa xác minh. Không dùng hoặc phân phối thư mục đó như bộ asset đã được duyệt. Runner kiểm tra BuildReport để bảo đảm build không đóng gói asset từ Assets/Audio. Thay file âm thanh trong Resources giữ nguyên `.meta` để bảo toàn GUID.
+Chạy `python Tools/audio_audit.py`, `python Tools/audio_review_mix.py`, rồi `powershell -ExecutionPolicy Bypass -File Tools/run_sound_qa.ps1`. Đóng Unity cùng project trước khi chạy QA. BuildReport xác minh legacy audio không nằm trong player.
 
-Chạy `python Tools/audio_audit.py` chỉ đọc âm thanh và cập nhật số đo. Số đo PCM không xác minh chất lượng nghe, điểm loop cảm nhận hay license.
+Bản nghe thử là `Builds/QA/AudioReview.wav`: đầu file nghe riêng cue/nhạc, từ giây 18 có mix dày giả lập. Đây là mix PCM offline, không phải bản ghi loa hoặc output Unity. Cần nghe duyệt thực tế để đánh giá cảm giác, loop, sắc âm và độ rõ của cảnh báo.

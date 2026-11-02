@@ -1,9 +1,11 @@
 {
   "generator": "Tools/audio_audit.py",
-  "generator_sha256": "0260314f52f9726cba16b91d71e28026ebee2dbf370beb2a5d97bda09372de57",
-  "method": "Original mathematical synthesis; deterministic random seed 301; no external audio samples",
+  "generator_sha256": "7c733c3b6c1f119766cf11d92212e40e8e588bfa5105e2b318bd4c26be80e4d4",
+  "method": "8 synthesized clips plus 7 documented external/user-provided clips; licenses are recorded per asset",
   "runtime_assets": [
     "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+    "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+    "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
     "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
     "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav",
     "Assets/Resources/Audio/SFX/SFX_Base_Damage.wav",
@@ -12,23 +14,328 @@
     "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
     "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav",
     "Assets/Resources/Audio/SFX/SFX_Hit.wav",
+    "Assets/Resources/Audio/SFX/SFX_Magic_Shoot.wav",
     "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
     "Assets/Resources/Audio/SFX/SFX_UI_Click.wav",
     "Assets/Resources/Audio/SFX/SFX_Victory.wav"
   ],
   "asset_sha256": {
-    "Assets/Resources/Audio/BGM/BGM_Battle.wav": "7589d1fcba433e0ede601237814800b15a834c7e9f3f5f86326ae1f0bf21337d",
-    "Assets/Resources/Audio/BGM/BGM_Preparation.wav": "8588d2c920d2ac90b0868cb3609d59fb31690ef3bc9bce3972fc48e67a1a7f92",
+    "Assets/Resources/Audio/BGM/BGM_Battle.wav": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+    "Assets/Resources/Audio/BGM/BGM_Preparation.wav": "8b34623019254da4112c3b921aa96b320046057d2d7dfd50e1bc0af916e942e5",
     "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav": "a661a3b81c5ea167a67a22cf340ade5310d374e11d8a4bccfd6abbd70c3f23c3",
     "Assets/Resources/Audio/SFX/SFX_Base_Damage.wav": "fb0aae6a2faf953afe7041276c0b2fcb1b77acd94d61ed7a1c30aaac8c42fc00",
     "Assets/Resources/Audio/SFX/SFX_Build_Failed.wav": "5c238b54dd640b54a58a20732d3540d39364ef9392d648bfd0ef6ed4e3f335a1",
     "Assets/Resources/Audio/SFX/SFX_Cannon_Shoot.wav": "d3b4acce8b65ee66e400ee0ec013d029700485d54b9494174db373db98230c38",
-    "Assets/Resources/Audio/SFX/SFX_Defeat.wav": "fdeb051c4ad04c18ba0c84fb23cbd623e614869fbd488e7975323cfba1a0fa06",
+    "Assets/Resources/Audio/SFX/SFX_Defeat.wav": "51bdb53d195863f25310a9409150e86666497d49388e73a44304dfeeddd0d7ec",
     "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav": "ab54fa4fdbecea5183166ef099b4b90757525dd9340278525c562fbfc0762c62",
     "Assets/Resources/Audio/SFX/SFX_Hit.wav": "f5ef19cc2c64fb680fb02d1817df6a60adcd0beadd851fecfe718b3df1a3efbc",
-    "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav": "d2f60ede106c8c6480e748f8ddda41b635d131a8d35d6dd9ee3e4ee6924366b2",
+    "Assets/Resources/Audio/SFX/SFX_Magic_Shoot.wav": "da156bef872664d5c1dd47a231d4df00263c1ebc19a7c8a80e8c479284f630cf",
+    "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav": "ed7834117563c8d22b3c8922c69cc87b29616558d69c714b22723637854d92b8",
     "Assets/Resources/Audio/SFX/SFX_UI_Click.wav": "76a1075c4e6639e6bb29b3da56c5e3054d1084bca7ac17d8e6523bad025e9a3f",
-    "Assets/Resources/Audio/SFX/SFX_Victory.wav": "1e0cbc8e55c1ac6a8e7b9b180e1c02c05439ec8c88419d1d83d64955b61182b6"
+    "Assets/Resources/Audio/SFX/SFX_Victory.wav": "a95ba109338e804cbb9ec10e40fcff9d78f3cb292a0ca709b211639b7f9c4208",
+    "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+    "Assets/Resources/Audio/BGM/BGM_Battle_High.wav": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4"
   },
-  "legacy_folder": "Assets/Audio: unknown external sources per user; preserved, not approved for redistribution"
+  "legacy_folder": "Assets/Audio: unknown external sources per user; preserved, not approved for redistribution",
+  "external_assets": {
+    "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav": {
+      "title": "Coin Splash",
+      "author": "LordTomorrow",
+      "license": "CC0 1.0",
+      "source_page": "https://opengameart.org/content/coin-splash",
+      "download_url": "https://opengameart.org/sites/default/files/coinsplash_0.ogg",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "verified_date": "2026-11-02",
+      "original_path": "Tools/AudioSources/CoinSplash/coinsplash_0.ogg",
+      "original_sha256": "1918a8e2eb94697f4710d1d47568e5194f4587f26ff0305c73cf8f8e28e15cc7",
+      "original_seconds": 0.33079166666666665,
+      "original_rate": 48000,
+      "original_channels": 1,
+      "runtime_path": "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
+      "runtime_sha256": "ed7834117563c8d22b3c8922c69cc87b29616558d69c714b22723637854d92b8",
+      "runtime_seconds": 0.3307936507936508,
+      "processing": "Mono, resample to 44100 Hz, 1ms fade-in / 6ms fade-out, normalize peak to 0.25, PCM16 WAV; original clatter retained",
+      "importer": "Tools/import_coin_splash.py",
+      "importer_sha256": "a33db570cdd23b192c72f1ef38e98e5fbf6768f2eb2766747f53656288f2effe",
+      "library_versions": {
+        "numpy": "2.2.3",
+        "scipy": "1.17.1",
+        "soundfile": "0.13.1"
+      }
+    },
+    "Assets/Resources/Audio/BGM/BGM_Preparation.wav": {
+      "title": "Tender Strength (user-provided wip WAV; title inferred from filename)",
+      "author": "Not supplied",
+      "license": "Specific license not supplied; not identified as CC0",
+      "source_page": "User states the download came from an official site; URL not supplied",
+      "verified_date": "2026-11-02",
+      "original_path": "Tools/AudioSources/Preparation/TenderStrength_user.wav",
+      "original_sha256": "a6797f4175e937d34ff33e664a3a5275c91f629ee7bfdb6dd22456d548920aa6",
+      "original_seconds": 83.56571428571428,
+      "original_rate": 44100,
+      "original_channels": 2,
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
+      "runtime_sha256": "8b34623019254da4112c3b921aa96b320046057d2d7dfd50e1bc0af916e942e5",
+      "runtime_seconds": 79.76648526077098,
+      "processing": "Preserve stereo PCM16 44100 Hz; trim near-silent tail at -60dB threshold plus 250ms decay; 20ms fade-in and 400ms fade-out; normalize peak to 0.20",
+      "importer": "Tools/import_preparation.py",
+      "importer_sha256": "27776a1b9f6d7a9d02be2cb3dbc15be19d369af7ad5ac904ac5c3b8ef1d7f3d4",
+      "numpy_version": "2.2.3"
+    },
+    "Assets/Resources/Audio/BGM/BGM_Battle.wav": {
+      "title": "All-Conquering Tide (title inferred from user filename)",
+      "author": "Not supplied",
+      "license": "Specific license and source URL not supplied",
+      "source_page": "WAV supplied locally by user",
+      "verified_date": "2026-11-02",
+      "original_path": "Tools/AudioSources/Battle/All-Conquering-Tide_user.wav",
+      "original_sha256": "51019057925f8010942409c953a589f8c633983ada14b4fa3bf8ef232d74b41a",
+      "original_seconds": 267.2783333333333,
+      "original_rate": 48000,
+      "original_channels": 2,
+      "original_full_scale_samples": 28,
+      "processing": "Stereo PCM16 44100 Hz; polyphase resampling 147/160; common gain 0.20; 800ms cyclic linear overlap; 5ms endpoint fades; unchanged pitch and speed. Section selection uses RMS and spectral flux; musical listening review pending.",
+      "importer": "Tools/import_battle.py",
+      "importer_sha256": "7fd2dae70b549f29649d249f4d36df7a71b0edbb705701d371193e7a4cddfce2",
+      "runtime_assets": [
+        {
+          "tier": "Calm",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+          "runtime_sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+          "runtime_seconds": 23.2,
+          "source_start": 128,
+          "source_end": 152
+        },
+        {
+          "tier": "Tense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+          "runtime_sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+          "runtime_seconds": 23.2,
+          "source_start": 56,
+          "source_end": 80
+        },
+        {
+          "tier": "Intense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+          "runtime_sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4",
+          "runtime_seconds": 31.2,
+          "source_start": 200,
+          "source_end": 232
+        }
+      ],
+      "analysis": [
+        {
+          "tier": "Calm",
+          "source_start": 128,
+          "source_end": 152,
+          "source_rms": 0.11687499573111405,
+          "mean_spectral_flux": 0.10293261714200613
+        },
+        {
+          "tier": "Tense",
+          "source_start": 56,
+          "source_end": 80,
+          "source_rms": 0.16968006749753642,
+          "mean_spectral_flux": 0.22588655823610293
+        },
+        {
+          "tier": "Intense",
+          "source_start": 200,
+          "source_end": 232,
+          "source_rms": 0.2720208616746429,
+          "mean_spectral_flux": 0.43744119897646583
+        }
+      ],
+      "tier": "Calm",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+      "runtime_sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+      "runtime_seconds": 23.2,
+      "source_start": 128,
+      "source_end": 152
+    },
+    "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav": {
+      "title": "All-Conquering Tide (title inferred from user filename)",
+      "author": "Not supplied",
+      "license": "Specific license and source URL not supplied",
+      "source_page": "WAV supplied locally by user",
+      "verified_date": "2026-11-02",
+      "original_path": "Tools/AudioSources/Battle/All-Conquering-Tide_user.wav",
+      "original_sha256": "51019057925f8010942409c953a589f8c633983ada14b4fa3bf8ef232d74b41a",
+      "original_seconds": 267.2783333333333,
+      "original_rate": 48000,
+      "original_channels": 2,
+      "original_full_scale_samples": 28,
+      "processing": "Stereo PCM16 44100 Hz; polyphase resampling 147/160; common gain 0.20; 800ms cyclic linear overlap; 5ms endpoint fades; unchanged pitch and speed. Section selection uses RMS and spectral flux; musical listening review pending.",
+      "importer": "Tools/import_battle.py",
+      "importer_sha256": "7fd2dae70b549f29649d249f4d36df7a71b0edbb705701d371193e7a4cddfce2",
+      "runtime_assets": [
+        {
+          "tier": "Calm",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+          "runtime_sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+          "runtime_seconds": 23.2,
+          "source_start": 128,
+          "source_end": 152
+        },
+        {
+          "tier": "Tense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+          "runtime_sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+          "runtime_seconds": 23.2,
+          "source_start": 56,
+          "source_end": 80
+        },
+        {
+          "tier": "Intense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+          "runtime_sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4",
+          "runtime_seconds": 31.2,
+          "source_start": 200,
+          "source_end": 232
+        }
+      ],
+      "analysis": [
+        {
+          "tier": "Calm",
+          "source_start": 128,
+          "source_end": 152,
+          "source_rms": 0.11687499573111405,
+          "mean_spectral_flux": 0.10293261714200613
+        },
+        {
+          "tier": "Tense",
+          "source_start": 56,
+          "source_end": 80,
+          "source_rms": 0.16968006749753642,
+          "mean_spectral_flux": 0.22588655823610293
+        },
+        {
+          "tier": "Intense",
+          "source_start": 200,
+          "source_end": 232,
+          "source_rms": 0.2720208616746429,
+          "mean_spectral_flux": 0.43744119897646583
+        }
+      ],
+      "tier": "Tense",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+      "runtime_sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+      "runtime_seconds": 23.2,
+      "source_start": 56,
+      "source_end": 80
+    },
+    "Assets/Resources/Audio/BGM/BGM_Battle_High.wav": {
+      "title": "All-Conquering Tide (title inferred from user filename)",
+      "author": "Not supplied",
+      "license": "Specific license and source URL not supplied",
+      "source_page": "WAV supplied locally by user",
+      "verified_date": "2026-11-02",
+      "original_path": "Tools/AudioSources/Battle/All-Conquering-Tide_user.wav",
+      "original_sha256": "51019057925f8010942409c953a589f8c633983ada14b4fa3bf8ef232d74b41a",
+      "original_seconds": 267.2783333333333,
+      "original_rate": 48000,
+      "original_channels": 2,
+      "original_full_scale_samples": 28,
+      "processing": "Stereo PCM16 44100 Hz; polyphase resampling 147/160; common gain 0.20; 800ms cyclic linear overlap; 5ms endpoint fades; unchanged pitch and speed. Section selection uses RMS and spectral flux; musical listening review pending.",
+      "importer": "Tools/import_battle.py",
+      "importer_sha256": "7fd2dae70b549f29649d249f4d36df7a71b0edbb705701d371193e7a4cddfce2",
+      "runtime_assets": [
+        {
+          "tier": "Calm",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
+          "runtime_sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f",
+          "runtime_seconds": 23.2,
+          "source_start": 128,
+          "source_end": 152
+        },
+        {
+          "tier": "Tense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+          "runtime_sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6",
+          "runtime_seconds": 23.2,
+          "source_start": 56,
+          "source_end": 80
+        },
+        {
+          "tier": "Intense",
+          "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+          "runtime_sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4",
+          "runtime_seconds": 31.2,
+          "source_start": 200,
+          "source_end": 232
+        }
+      ],
+      "analysis": [
+        {
+          "tier": "Calm",
+          "source_start": 128,
+          "source_end": 152,
+          "source_rms": 0.11687499573111405,
+          "mean_spectral_flux": 0.10293261714200613
+        },
+        {
+          "tier": "Tense",
+          "source_start": 56,
+          "source_end": 80,
+          "source_rms": 0.16968006749753642,
+          "mean_spectral_flux": 0.22588655823610293
+        },
+        {
+          "tier": "Intense",
+          "source_start": 200,
+          "source_end": 232,
+          "source_rms": 0.2720208616746429,
+          "mean_spectral_flux": 0.43744119897646583
+        }
+      ],
+      "tier": "Intense",
+      "runtime_path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+      "runtime_sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4",
+      "runtime_seconds": 31.2,
+      "source_start": 200,
+      "source_end": 232
+    },
+    "Assets/Resources/Audio/SFX/SFX_Victory.wav": {
+      "title": "Victory Fanfare",
+      "author": "Universfield",
+      "license": "Pixabay Content License (not CC0)",
+      "source_page": "https://pixabay.com/sound-effects/musical-victory-fanfare-152480/",
+      "license_url": "https://pixabay.com/service/license-summary/",
+      "verified_date": "2026-11-02",
+      "delivery": "User supplied WAV downloaded from the selected Pixabay item; original site lists MP3, conversion history not supplied",
+      "original_path": "Tools/AudioSources/Victory/universfield-victory-fanfare-152480.wav",
+      "original_sha256": "aa21f005115151a5c37b77c5891b8e06ae817dac7e156e0e1a660fc32eeffab7",
+      "original_seconds": 3.813877551020408,
+      "original_rate": 44100,
+      "original_channels": 2,
+      "runtime_path": "Assets/Resources/Audio/SFX/SFX_Victory.wav",
+      "runtime_sha256": "a95ba109338e804cbb9ec10e40fcff9d78f3cb292a0ca709b211639b7f9c4208",
+      "runtime_seconds": 3.813877551020408,
+      "processing": "Keep full duration, stereo PCM16 44100 Hz; 1ms fade-in and 20ms fade-out; normalize peak to 0.30; no speed/pitch change or added reverb",
+      "importer": "Tools/import_victory.py",
+      "importer_sha256": "4bc52448fd4843e6957d0394b72e41b7751047ea8d7bb59265f21cfca4476509",
+      "numpy_version": "2.2.3"
+    },
+    "Assets/Resources/Audio/SFX/SFX_Defeat.wav": {
+      "title": "FIASCO",
+      "author": "olenchic",
+      "license": "Pixabay Content License (not CC0)",
+      "source_page": "https://pixabay.com/sound-effects/film-special-effects-fiasco-154915/",
+      "license_url": "https://pixabay.com/service/license-summary/",
+      "verified_date": "2026-11-02",
+      "delivery": "User supplied WAV of selected Pixabay item; site lists MP3, conversion history not supplied",
+      "original_path": "Tools/AudioSources/Defeat/olenchic-fiasco-154915.wav",
+      "original_sha256": "7c137af17b2539f6c8eaa802008eda985eb0187ac66e173d063bf6dce327ef9d",
+      "original_seconds": 3.3436734693877552,
+      "original_rate": 44100,
+      "original_channels": 2,
+      "runtime_path": "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
+      "runtime_sha256": "51bdb53d195863f25310a9409150e86666497d49388e73a44304dfeeddd0d7ec",
+      "runtime_seconds": 3.3436734693877552,
+      "processing": "Full duration, stereo PCM16 44100 Hz; 1ms fade-in / 20ms fade-out; peak normalized to 0.30; unchanged speed and pitch",
+      "importer": "Tools/import_defeat.py",
+      "importer_sha256": "471107ff0f2f81a7ab32e65d13350a47e90d1c9d1bb0f83d94d3bd82876d59a1",
+      "numpy_version": "2.2.3"
+    }
+  }
 }

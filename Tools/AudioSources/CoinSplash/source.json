@@ -1,0 +1,25 @@
+{
+  "title": "Coin Splash",
+  "author": "LordTomorrow",
+  "license": "CC0 1.0",
+  "source_page": "https://opengameart.org/content/coin-splash",
+  "download_url": "https://opengameart.org/sites/default/files/coinsplash_0.ogg",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "verified_date": "2026-11-02",
+  "original_path": "Tools/AudioSources/CoinSplash/coinsplash_0.ogg",
+  "original_sha256": "1918a8e2eb94697f4710d1d47568e5194f4587f26ff0305c73cf8f8e28e15cc7",
+  "original_seconds": 0.33079166666666665,
+  "original_rate": 48000,
+  "original_channels": 1,
+  "runtime_path": "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
+  "runtime_sha256": "ed7834117563c8d22b3c8922c69cc87b29616558d69c714b22723637854d92b8",
+  "runtime_seconds": 0.3307936507936508,
+  "processing": "Mono, resample to 44100 Hz, 1ms fade-in / 6ms fade-out, normalize peak to 0.25, PCM16 WAV; original clatter retained",
+  "importer": "Tools/import_coin_splash.py",
+  "importer_sha256": "a33db570cdd23b192c72f1ef38e98e5fbf6768f2eb2766747f53656288f2effe",
+  "library_versions": {
+    "numpy": "2.2.3",
+    "scipy": "1.17.1",
+    "soundfile": "0.13.1"
+  }
+}

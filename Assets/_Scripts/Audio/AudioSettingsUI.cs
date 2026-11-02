@@ -6,6 +6,15 @@ public class AudioSettingsUI : MonoBehaviour
 {
     private GameObject panel;
     private AudioManager audioManager;
+    private RectTransform toggleRect;
+    private static AudioSettingsUI current;
+
+    public static bool ConsumesPointer(Vector2 screenPosition)
+    {
+        if (current == null) return false;
+        return (current.toggleRect != null && RectTransformUtility.RectangleContainsScreenPoint(current.toggleRect, screenPosition))
+            || (current.panel != null && current.panel.activeInHierarchy && RectTransformUtility.RectangleContainsScreenPoint(current.panel.GetComponent<RectTransform>(), screenPosition));
+    }
 
     public static void EnsureForScene()
     {
@@ -23,8 +32,15 @@ public class AudioSettingsUI : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.EnsureInstance();
+        current = this;
         Button toggle = Button("SOUND", transform, new Vector2(132, 46), new Vector2(-24, -24));
+        toggleRect = toggle.GetComponent<RectTransform>();
+        toggleRect.anchorMin = toggleRect.anchorMax = toggleRect.pivot = new Vector2(1, 0);
+        toggleRect.anchoredPosition = new Vector2(-24, 24);
         panel = Box("Sound Settings", transform, new Vector2(420, 248), new Vector2(-24, -82), new Color32(19, 27, 34, 255)).gameObject;
+        RectTransform panelRect = panel.GetComponent<RectTransform>();
+        panelRect.anchorMin = panelRect.anchorMax = panelRect.pivot = new Vector2(1, 0);
+        panelRect.anchoredPosition = new Vector2(-24, 82);
         Label("AUDIO", panel.transform, new Vector2(20, -16), new Vector2(380, 30), 22);
         AddSlider("Music", -62, audioManager.GetBGMVolume(), audioManager.SetBGMVolume);
         AddSlider("Effects", -124, audioManager.GetSFXVolume(), audioManager.SetSFXVolume);
@@ -54,6 +70,7 @@ public class AudioSettingsUI : MonoBehaviour
         handleRect.anchorMin = handleRect.anchorMax = new Vector2(0, 0.5f);
         handleRect.pivot = new Vector2(0.5f, 0.5f);
         handleRect.anchoredPosition = Vector2.zero;
+        handleRect.sizeDelta = new Vector2(18, 0);
         slider.handleRect = handleRect;
         slider.targetGraphic = handle;
         slider.minValue = 0f;
@@ -101,5 +118,9 @@ public class AudioSettingsUI : MonoBehaviour
         label.alignment = TextAnchor.MiddleCenter;
         return button;
     }
-    private void OnDestroy() { if (audioManager != null) audioManager.SaveVolumeSettings(); }
+    private void OnDestroy()
+    {
+        if (current == this) current = null;
+        if (audioManager != null) audioManager.SaveVolumeSettings();
+    }
 }

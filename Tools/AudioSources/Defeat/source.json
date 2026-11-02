@@ -1,0 +1,21 @@
+{
+  "title": "FIASCO",
+  "author": "olenchic",
+  "license": "Pixabay Content License (not CC0)",
+  "source_page": "https://pixabay.com/sound-effects/film-special-effects-fiasco-154915/",
+  "license_url": "https://pixabay.com/service/license-summary/",
+  "verified_date": "2026-11-02",
+  "delivery": "User supplied WAV of selected Pixabay item; site lists MP3, conversion history not supplied",
+  "original_path": "Tools/AudioSources/Defeat/olenchic-fiasco-154915.wav",
+  "original_sha256": "7c137af17b2539f6c8eaa802008eda985eb0187ac66e173d063bf6dce327ef9d",
+  "original_seconds": 3.3436734693877552,
+  "original_rate": 44100,
+  "original_channels": 2,
+  "runtime_path": "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
+  "runtime_sha256": "51bdb53d195863f25310a9409150e86666497d49388e73a44304dfeeddd0d7ec",
+  "runtime_seconds": 3.3436734693877552,
+  "processing": "Full duration, stereo PCM16 44100 Hz; 1ms fade-in / 20ms fade-out; peak normalized to 0.30; unchanged speed and pitch",
+  "importer": "Tools/import_defeat.py",
+  "importer_sha256": "471107ff0f2f81a7ab32e65d13350a47e90d1c9d1bb0f83d94d3bd82876d59a1",
+  "numpy_version": "2.2.3"
+}

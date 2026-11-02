@@ -1,23 +1,43 @@
 [
   {
     "path": "Assets/Resources/Audio/BGM/BGM_Battle.wav",
-    "seconds": 16.0,
-    "channels": 1,
+    "seconds": 23.2,
+    "channels": 2,
     "rate": 44100,
-    "peak": 0.19095,
-    "rms": 0.0618,
+    "peak": 0.19809,
+    "rms": 0.02281,
     "clipped_samples": 0,
-    "sha256": "7589d1fcba433e0ede601237814800b15a834c7e9f3f5f86326ae1f0bf21337d"
+    "sha256": "410cb9e75a6e36f0b23f587afae50f3c1e2092bca68f9846a37a389a8950fb1f"
+  },
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Battle_High.wav",
+    "seconds": 31.2,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.20035,
+    "rms": 0.05409,
+    "clipped_samples": 0,
+    "sha256": "bfbfd92144f4b84e6928894aa856d8fce8138d37f0619b3d458c720b52b9d2c4"
+  },
+  {
+    "path": "Assets/Resources/Audio/BGM/BGM_Battle_Medium.wav",
+    "seconds": 23.2,
+    "channels": 2,
+    "rate": 44100,
+    "peak": 0.19803,
+    "rms": 0.03346,
+    "clipped_samples": 0,
+    "sha256": "1b32fb59c6a91bcea59160e481ea70e8c232df858df8dd4a0425d9346235c6d6"
   },
   {
     "path": "Assets/Resources/Audio/BGM/BGM_Preparation.wav",
-    "seconds": 16.0,
-    "channels": 1,
+    "seconds": 79.766,
+    "channels": 2,
     "rate": 44100,
-    "peak": 0.19815,
-    "rms": 0.08034,
+    "peak": 0.19998,
+    "rms": 0.02652,
     "clipped_samples": 0,
-    "sha256": "8588d2c920d2ac90b0868cb3609d59fb31690ef3bc9bce3972fc48e67a1a7f92"
+    "sha256": "8b34623019254da4112c3b921aa96b320046057d2d7dfd50e1bc0af916e942e5"
   },
   {
     "path": "Assets/Resources/Audio/SFX/SFX_Arrow_Shoot.wav",
@@ -61,13 +81,13 @@
   },
   {
     "path": "Assets/Resources/Audio/SFX/SFX_Defeat.wav",
-    "seconds": 0.9,
-    "channels": 1,
+    "seconds": 3.344,
+    "channels": 2,
     "rate": 44100,
-    "peak": 0.2706,
-    "rms": 0.11384,
+    "peak": 0.29999,
+    "rms": 0.03084,
     "clipped_samples": 0,
-    "sha256": "fdeb051c4ad04c18ba0c84fb23cbd623e614869fbd488e7975323cfba1a0fa06"
+    "sha256": "51bdb53d195863f25310a9409150e86666497d49388e73a44304dfeeddd0d7ec"
   },
   {
     "path": "Assets/Resources/Audio/SFX/SFX_Enemy_Death.wav",
@@ -90,14 +110,24 @@
     "sha256": "f5ef19cc2c64fb680fb02d1817df6a60adcd0beadd851fecfe718b3df1a3efbc"
   },
   {
+    "path": "Assets/Resources/Audio/SFX/SFX_Magic_Shoot.wav",
+    "seconds": 0.24,
+    "channels": 1,
+    "rate": 44100,
+    "peak": 0.28403,
+    "rms": 0.10598,
+    "clipped_samples": 0,
+    "sha256": "da156bef872664d5c1dd47a231d4df00263c1ebc19a7c8a80e8c479284f630cf"
+  },
+  {
     "path": "Assets/Resources/Audio/SFX/SFX_Tower_Place.wav",
-    "seconds": 0.18,
+    "seconds": 0.331,
     "channels": 1,
     "rate": 44100,
     "peak": 0.25,
-    "rms": 0.10825,
+    "rms": 0.0331,
     "clipped_samples": 0,
-    "sha256": "d2f60ede106c8c6480e748f8ddda41b635d131a8d35d6dd9ee3e4ee6924366b2"
+    "sha256": "ed7834117563c8d22b3c8922c69cc87b29616558d69c714b22723637854d92b8"
   },
   {
     "path": "Assets/Resources/Audio/SFX/SFX_UI_Click.wav",
@@ -111,12 +141,12 @@
   },
   {
     "path": "Assets/Resources/Audio/SFX/SFX_Victory.wav",
-    "seconds": 0.9,
-    "channels": 1,
+    "seconds": 3.814,
+    "channels": 2,
     "rate": 44100,
-    "peak": 0.27057,
-    "rms": 0.11384,
+    "peak": 0.29999,
+    "rms": 0.04668,
     "clipped_samples": 0,
-    "sha256": "1e0cbc8e55c1ac6a8e7b9b180e1c02c05439ec8c88419d1d83d64955b61182b6"
+    "sha256": "a95ba109338e804cbb9ec10e40fcff9d78f3cb292a0ca709b211639b7f9c4208"
   }
 ]

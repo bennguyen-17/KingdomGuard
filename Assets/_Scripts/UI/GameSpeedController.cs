@@ -105,6 +105,7 @@ public class GameSpeedController : MonoBehaviour
             var button = go.GetComponent<Button>();
             button.targetGraphic = faces[i];
             button.onClick.AddListener(() => SetSpeed(captured));
+            button.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
 
             var labelGo = new GameObject("Label", typeof(RectTransform), typeof(Text), typeof(Shadow));
             labelGo.transform.SetParent(go.transform, false);
